@@ -1,0 +1,13 @@
+.logo{
+  font-family: "Pacifico",cursive;
+  font-style:normal;
+  font-weight: 400;
+}
+/* body{
+  background: linear-gradient(135deg, rgba(233, 229, 228, 0.8) 10%, rgba(199, 86, 86, 0.2) 90%);
+  backdrop-filter: blur(10px);
+} */
+
+.primary-color{
+  color: teal;
+}
