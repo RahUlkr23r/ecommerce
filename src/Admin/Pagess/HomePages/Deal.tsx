@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import DealTable from './DealTable'
-import { Category } from '@mui/icons-material'
+
 import DealCategoryTable from './DealCategoryTable'
 import CreateDealTable from './CreateDealTable'
 

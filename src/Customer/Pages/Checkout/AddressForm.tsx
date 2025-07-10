@@ -7,8 +7,6 @@ import { useFormik, FormikHelpers } from 'formik';
 import * as Yup from "yup";
 import { useAppDispatch } from '../../../State/Store';
 import { createOrder } from '../../../State/Customers/OrderSlice';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../State/Store';
 
 const indianStates: string[] = [
   "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa",
@@ -63,7 +61,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ paymentGateway }) => {
 
   const onSubmit = (
     values: AddressFormValues,
-    { resetForm }: FormikHelpers<AddressFormValues>
+    { }: FormikHelpers<AddressFormValues>
   ) => {
     
 

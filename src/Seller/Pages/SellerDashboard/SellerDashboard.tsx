@@ -1,4 +1,4 @@
-import React from 'react';
+
 import SellerDrawerList from '../../Component/SellerDrawerList/SellerDrawerList';
 import { Outlet } from 'react-router-dom';
 

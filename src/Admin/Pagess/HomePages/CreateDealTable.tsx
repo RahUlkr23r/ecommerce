@@ -17,21 +17,19 @@ import { createDeal } from '../../../State/Admins/dealSlice';
 import { fetchAllHomeCategories } from '../../../State/Admins/adminSlice';
 import { HomeCategory } from '../../../tpyes/HomeCategoryType';
 
-const CreateDealTable = () => {
+const CreateDealTable: React.FC = () => {
   const dispatch = useAppDispatch();
-
 
   const { homeCategories, loading } = useAppSelector((state) => state.admin);
 
   useEffect(() => {
-
-dispatch(fetchAllHomeCategories(  localStorage.getItem("jwt") ));
-   
+    const token = localStorage.getItem('jwt') || '';
+    dispatch(fetchAllHomeCategories(token));
   }, [dispatch]);
 
   const formik = useFormik({
     initialValues: {
-      categoryId: '',
+      categoryId: '', // we'll convert to number later
       discount: 0,
     },
     validationSchema: Yup.object({
@@ -39,13 +37,13 @@ dispatch(fetchAllHomeCategories(  localStorage.getItem("jwt") ));
         .required('Category is required')
         .typeError('Category is required'),
       discount: Yup.number()
+        .required('Discount is required')
         .min(1, 'Discount must be at least 1%')
-        .max(100, 'Discount cannot exceed 100%')
-        .required('Discount is required'),
+        .max(100, 'Discount cannot exceed 100%'),
     }),
     onSubmit: (values, { resetForm }) => {
       const selectedCategory = homeCategories.find(
-        (cat) => cat.id === values.categoryId
+        (cat) => cat.id === Number(values.categoryId)
       );
 
       if (!selectedCategory) {
@@ -67,13 +65,21 @@ dispatch(fetchAllHomeCategories(  localStorage.getItem("jwt") ));
     <Box
       component="form"
       onSubmit={formik.handleSubmit}
-      sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}
+      sx={{
+        maxWidth: 450,
+        mx: 'auto',
+        mt: 4,
+        p: 3,
+        bgcolor: '#fff',
+        borderRadius: 2,
+        boxShadow: 3,
+      }}
     >
-      <Typography variant="h4" align="center" gutterBottom>
+      <Typography variant="h5" align="center" fontWeight="bold" mb={2}>
         Create Deal
       </Typography>
 
-      {/* Category Dropdown */}
+      {/* Category Selector */}
       <FormControl
         fullWidth
         margin="normal"
@@ -92,7 +98,7 @@ dispatch(fetchAllHomeCategories(  localStorage.getItem("jwt") ));
             <MenuItem disabled>Loading...</MenuItem>
           ) : (
             homeCategories.map((cat: HomeCategory) => (
-              <MenuItem key={cat.categoryId} value={cat.id}>
+              <MenuItem key={cat.id} value={cat.id}>
                 {cat.name}
               </MenuItem>
             ))
@@ -103,7 +109,7 @@ dispatch(fetchAllHomeCategories(  localStorage.getItem("jwt") ));
         </FormHelperText>
       </FormControl>
 
-      {/* Discount Input */}
+      {/* Discount Field */}
       <TextField
         fullWidth
         margin="normal"
@@ -117,12 +123,13 @@ dispatch(fetchAllHomeCategories(  localStorage.getItem("jwt") ));
         helperText={formik.touched.discount && formik.errors.discount}
       />
 
+      {/* Submit Button */}
       <Button
         type="submit"
         variant="contained"
         fullWidth
-        color="primary"
-        sx={{ mt: 2 }}
+        sx={{ mt: 3, py: 1.2 }}
+        disabled={loading}
       >
         Create Deal
       </Button>

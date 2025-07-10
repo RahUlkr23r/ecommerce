@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../Store";
+
 import { Address } from "../../tpyes/usertype";
 import { Order, OrderItems, OrderState } from "../../tpyes/OrderTypes";
 import { api } from "../../Config/Api";
@@ -27,7 +27,7 @@ export const fetchUserOrderHistory = createAsyncThunk<
     const response = await api.get<Order[]>(`${API_URL}/user/history`, {
       headers: { Authorization: `Bearer ${jwt}` },
     });
-    console.log("Fetched user order history:", response.data);
+  
     return response.data;
   } catch (error: any) {
     return rejectWithValue(
@@ -46,7 +46,7 @@ export const fetchOrderById = createAsyncThunk<
     const response = await api.get<Order>(`${API_URL}/${orderId}`, {
       headers: { Authorization: `Bearer ${jwt}` },
     });
-    console.log("Fetched order by ID:", response.data);
+    
     return response.data;
   } catch (error: any) {
     return rejectWithValue(
@@ -67,7 +67,7 @@ export const fetchOrderItemById = createAsyncThunk<
       const response = await api.get<OrderItems>(`${API_URL}/item/${orderItemId}`, {
         headers: { Authorization: `Bearer ${jwt}` },
       });
-      console.log("Fetched order item by ID:", response.data);
+   
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -120,7 +120,7 @@ export const createOrder = createAsyncThunk<
 
       return response.data;
     } catch (error: any) {
-      console.error("Error creating order:", error);
+   
       return rejectWithValue(
         "Failed to create order: " +
           (error.response?.data?.message || error.message)
@@ -140,14 +140,14 @@ export const paymentSuccess = createAsyncThunk<
       headers: { Authorization: `Bearer ${jwt}` },
       params: { paymentLinkId },
     });
-    console.log("Payment success:", response.data);
+   
     return response.data;
   } catch (error: any) {
     console.log("Payment error:", error.response);
     if (error.response) {
       return rejectWithValue(error.response.data.message);
     }
-    return rejectWithValue("Failed to process payment");
+  
   }
 });
 // ✅ 6. Cancel Order
@@ -162,7 +162,7 @@ export const cancelOrder = createAsyncThunk<
         Authorization: `Bearer ${jwt}`,
       },
     });
-    console.log("Order canceled:", response.data);
+   
     return response.data;
   } catch (error: any) {
     return rejectWithValue(

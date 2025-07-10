@@ -1,4 +1,4 @@
-import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../Config/Api";
 
 
@@ -14,7 +14,7 @@ export const sendLoginSignupOtp = createAsyncThunk(
           role, // include role here
         });
       
-        console.log("response...",response.data)
+      
       } catch (error: any) {
         return rejectWithValue(error.response?.data || "Error sending OTP");
       }
@@ -37,13 +37,13 @@ export const sendLoginSignupOtp = createAsyncThunk(
     }
   );
   export const logout=createAsyncThunk<any, any>("/auth/logout",
-      async(navigate, { rejectWithValue }) => {
+      async(navigate, {  }) => {
         try {
           localStorage.clear()
-          console.log("logoutSuccess")
+      
           navigate("/")
         } catch (error) {
-          console.log("error",error)
+         
           
         }
         

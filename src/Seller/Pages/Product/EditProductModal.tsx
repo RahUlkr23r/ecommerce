@@ -10,7 +10,7 @@ import {
   Grid,
   Box,
   Typography,
-  Divider,
+
   IconButton,
   InputAdornment,
   CircularProgress,
@@ -163,7 +163,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ open, onClose, prod
         )}
         
         <Grid container spacing={3} mt={1}>
-          <Grid item xs={12} md={6}>
+          <Grid >
             <TextField
               fullWidth
               label="Product Title"
@@ -175,7 +175,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ open, onClose, prod
             />
           </Grid>
           
-          <Grid item xs={12} md={6}>
+          <Grid >
             <TextField
               fullWidth
               label="Description"
@@ -188,7 +188,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ open, onClose, prod
             />
           </Grid>
           
-          <Grid item xs={6} md={3}>
+          <Grid >
             <TextField
               fullWidth
               label="Price ($)"
@@ -205,7 +205,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ open, onClose, prod
             />
           </Grid>
           
-          <Grid item xs={6} md={3}>
+          <Grid >
             <TextField
               fullWidth
               label="Quantity"
@@ -221,7 +221,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ open, onClose, prod
             />
           </Grid>
           
-          <Grid item xs={6} md={3}>
+          <Grid >
             <TextField
               fullWidth
               label="Stock Level"
@@ -237,7 +237,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ open, onClose, prod
             />
           </Grid>
           
-          <Grid item xs={12} md={6}>
+          <Grid>
             <TextField
               fullWidth
               label="Colors (comma separated)"
@@ -249,7 +249,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ open, onClose, prod
             />
           </Grid>
           
-          <Grid item xs={12} md={6}>
+          <Grid>
             <TextField
               fullWidth
               label="Sizes (comma separated)"

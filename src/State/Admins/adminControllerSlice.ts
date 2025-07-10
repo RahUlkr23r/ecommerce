@@ -54,10 +54,10 @@ export const updateSellerStatus = createAsyncThunk<
       {},
       getAuthHeader()
     );
-    console.log('Update response:', response.data);
+   
     return response.data;
   } catch (err: any) {
-    console.error('Error updating seller status:', err);
+ 
     return rejectWithValue(err.response?.data?.message || 'Failed to update seller status');
   }
 });

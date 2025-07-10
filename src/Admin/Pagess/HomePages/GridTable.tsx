@@ -1,4 +1,4 @@
-import React from 'react';
+
 import HomeCategoryTable from './HomeCategoryTable';
 import { useAppSelector, useAppDispatch } from '../../../State/Store';
 import { createHomecategories } from '../../../State/Customers/customerSlice';

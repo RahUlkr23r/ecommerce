@@ -1,130 +1,4 @@
-// import * as React from 'react';
-// import {
-//   Paper,
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableContainer,
-//   TableHead,
-//   TablePagination,
-//   TableRow,
-//   CircularProgress,
-//   Typography,
-//   Button,
-// } from '@mui/material';
-// import { useAppDispatch, useAppSelector } from '../../../State/Store';
-// import { fetchSellerOrders } from '../../../State/Sellers/sellerOrderSlice';
 
-// export default function OrderTable() {
-//   const [page, setPage] = React.useState(0);
-//   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-//   const dispatch = useAppDispatch();
-//   const { sellerOrders, loading, error } = useAppSelector((state) => state.sellerOrder);
-
-//   React.useEffect(() => {
-//     const jwt = localStorage.getItem('jwt');
-//     if (jwt) {
-//       dispatch(fetchSellerOrders(jwt));
-//     }
-//   }, [dispatch]);
-
-//   const handleChangePage = (event: unknown, newPage: number) => {
-//     setPage(newPage);
-//   };
-
-//   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     setRowsPerPage(+event.target.value);
-//     setPage(0);
-//   };
-
-//   if (loading) {
-//     return (
-//       <Paper sx={{ padding: 5, textAlign: 'center' }}>
-//         <CircularProgress />
-//       </Paper>
-//     );
-//   }
-
-//   if (error) {
-//     return (
-//       <Paper sx={{ padding: 5, textAlign: 'center' }}>
-//         <Typography color="error">{error}</Typography>
-//         <Button onClick={() => window.location.reload()} sx={{ mt: 2 }} variant="outlined">
-//           Retry
-//         </Button>
-//       </Paper>
-//     );
-//   }
-
-//   const paginatedOrders =
-//     Array.isArray(sellerOrders) && sellerOrders.length > 0
-//       ? sellerOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-//       : [];
-
-//   return (
-//     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-//       <TableContainer sx={{ maxHeight: 440 }}>
-//         <Table stickyHeader>
-//           <TableHead>
-//             <TableRow>
-//               <TableCell>Order ID</TableCell>
-//               <TableCell>Product(s)</TableCell>
-//               <TableCell>Shipping Address</TableCell>
-//               <TableCell>Status</TableCell>
-//               <TableCell align="center">Update</TableCell>
-//             </TableRow>
-//           </TableHead>
-//           <TableBody>
-//             {paginatedOrders.map((order, index) => (
-//               <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-//                 <TableCell>{order.id}</TableCell>
-//                 <TableCell>
-//                   {order.orderItems?.map((item: any) => (
-//                     <div key={item.id}>
-//                       <img src={item.product?.images[0] || ''} alt={item.product?.title || 'Product'} style={{ width: 40, height: 40, objectFit: 'cover', marginRight: 8 }} />
-//                       {item.product?.title} × {item.quantity}{}{}
-//                       {item.product.colors[0]} {}{}
-//                     {item.product.sizes[0]}{}{}
-                      
-//                     </div>
-//                   ))}
-//                 </TableCell>
-//                 <TableCell>
-//                   {order.shippingAddress
-//                     ? `${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.state} - ${order.shippingAddress.pincode}`
-//                     : 'N/A'}
-//                 </TableCell>
-//                 <TableCell>{order.orderStatus}</TableCell>
-//                 <TableCell align="center">
-//                   <Button variant="outlined" size="small">
-//                     Update
-//                   </Button>
-//                 </TableCell>
-//               </TableRow>
-//             ))}
-//             {paginatedOrders.length === 0 && (
-//               <TableRow>
-//                 <TableCell colSpan={5} align="center">
-//                   No orders found.
-//                 </TableCell>
-//               </TableRow>
-//             )}
-//           </TableBody>
-//         </Table>
-//       </TableContainer>
-//       <TablePagination
-//         rowsPerPageOptions={[5, 10, 25]}
-//         component="div"
-//         count={sellerOrders?.length || 0}
-//         rowsPerPage={rowsPerPage}
-//         page={page}
-//         onPageChange={handleChangePage}
-//         onRowsPerPageChange={handleChangeRowsPerPage}
-//       />
-//     </Paper>
-//   );
-// }
 import React, { useEffect, useState, useCallback } from "react";
 import {
   Paper,
@@ -137,7 +11,6 @@ import {
   TableRow,
   Select,
   MenuItem,
-  CircularProgress,
   Typography,
   Box,
   Chip,
@@ -161,7 +34,7 @@ import {
 } from "@mui/icons-material";
 import { teal } from "@mui/material/colors";
 
-// Memoize static data to prevent unnecessary re-renders
+
 const columns = [
   { id: "id", label: "Order ID", minWidth: 100 },
   { id: "product", label: "Product(s)", minWidth: 300 },
@@ -410,8 +283,8 @@ export default function OrderTable() {
                     : "N/A";
 
                   // Get payment status configuration
-                  const paymentStatus = order.paymentStatus || "PENDING";
-                  const paymentConfig = paymentStatusConfig[paymentStatus] || paymentStatusConfig.PENDING;
+                  const paymentStatus = order.paymentStatus ;
+                  const paymentConfig =  paymentStatusConfig.COMPLETED;
 
                   return (
                     <React.Fragment key={order.id}>

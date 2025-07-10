@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../State/Store';
 import { searchProduct, clearSearchResults } from '../../../State/Customers/ProductSlice';
@@ -71,7 +71,7 @@ const SearchResults = () => {
             category: { categoryId: String(product.category?.id ?? '') },
           };
           return (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={safeProduct.id}>
+            <Grid >
               <ProductCard product={safeProduct} />
             </Grid>
           );

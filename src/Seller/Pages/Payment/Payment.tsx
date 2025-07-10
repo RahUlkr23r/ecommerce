@@ -1,5 +1,5 @@
 import { Button, Card, Divider } from '@mui/material';
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import TransactionTable from './TransactionTable';
 import { useAppDispatch, useAppSelector } from '../../../State/Store';
 import { fetchSellerTransactions } from '../../../State/Sellers/transactionSlice';
@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 
 const Payment = () => {
   const dispatch = useAppDispatch();
-  const { transactions, loading } = useAppSelector((store) => store.transactions);
+  const { transactions} = useAppSelector((store) => store.transactions);
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt') || '';

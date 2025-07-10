@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Cart } from "../../tpyes/CartType"; // Typo in "types"
 import { api } from "../../Config/Api"; // Missing closing quote
 import { CouponState } from "../../tpyes/CouponType";
-const API_URL = "/api/coupons";
+
 
 export const applyCoupon = createAsyncThunk<
   Cart,
@@ -19,10 +19,10 @@ export const applyCoupon = createAsyncThunk<
           params: { apply,  code, orderValue },
           headers: { Authorization: `Bearer ${jwt}` },
         }
-      ); console.log("apply coupon",response.data)
+      ); 
       return response.data;
     } catch (error: any) {
-      console.log("coupon apply failed ",error)
+    
       return rejectWithValue(error.response?.data?.message || "Coupon application failed");
     }
   }

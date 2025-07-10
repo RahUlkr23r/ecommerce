@@ -5,13 +5,13 @@ import {
   Chip, Box, CircularProgress
 } from "@mui/material";
 import {
-  Edit, Check, Close, Person, Business, LocationOn, AccountBalance, CameraAlt
+  Edit,  Person, Business, LocationOn, AccountBalance
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { useAppDispatch, useAppSelector } from "../../../State/Store";
 import { fetchSellerProfile } from "../../../State/Sellers/sellerSlice";
 
-const ProfileCard = styled(Card)(({ theme }) => ({
+const ProfileCard = styled(Card)(() => ({
   borderRadius: "16px",
   boxShadow: "0 8px 16px rgba(0,0,0,0.08)",
   transition: "transform 0.3s, box-shadow 0.3s",
@@ -53,7 +53,7 @@ const Profile = () => {
   const jwt = localStorage.getItem("jwt");
 
   const [editSection, setEditSection] = useState<string | null>(null);
-  const [tempData, setTempData] = useState<any>({});
+  const [ setTempData] = useState<any>({});
 
   useEffect(() => {
     if (jwt) {
@@ -67,22 +67,8 @@ const Profile = () => {
     setTempData({ ...profile[section as keyof typeof profile] });
   };
 
-  const handleCancelEdit = () => {
-    setEditSection(null);
-    setTempData({});
-  };
 
-  const handleSaveEdit = () => {
-    setEditSection(null);
-    // 🔁 Optionally send updated data to backend here
-  };
 
-  const handleChange = (field: string, value: string) => {
-    setTempData({
-      ...tempData,
-      [field]: value
-    });
-  };
 
   if (loading) return <Box textAlign="center" mt={5}><CircularProgress /></Box>;
   if (error) return <Box textAlign="center" mt={5}><Typography color="error">{error.message}</Typography></Box>;

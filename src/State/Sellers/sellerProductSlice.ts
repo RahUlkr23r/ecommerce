@@ -186,7 +186,7 @@ const initialState: SellerProductState = {
 
 // ---------- Thunks ----------
 
-// ✅ 1. Fetch all seller products
+// 1. Fetch all seller products
 export const fetchSellerProducts = createAsyncThunk<Product[], string>(
   "sellerProduct/fetchAll",
   async (jwt, { rejectWithValue }) => {
@@ -205,7 +205,7 @@ export const fetchSellerProducts = createAsyncThunk<Product[], string>(
   }
 );
 
-// ✅ 2. Create new product
+//  2. Create new product
 export const createProduct = createAsyncThunk<
   Product,
   { request: CreateProductRequest; jwt: string | null },
@@ -217,17 +217,17 @@ export const createProduct = createAsyncThunk<
         Authorization: `Bearer ${jwt}`,
       },
     });
-    console.log("Product created:", response.data);
+
     return response.data;
   } catch (error: any) {
-    console.error("Error creating product:", error);
+
     const message =
       error?.response?.data?.message || error?.message || "Error creating product";
     return rejectWithValue(message);
   }
 });
 
-// ✅ 3. Update existing product
+//  3. Update existing product
 export const updateSellerProduct = createAsyncThunk<
   Product,
   { productId: number | string; product: Partial<Product>; jwt: string | null },
@@ -251,7 +251,7 @@ export const updateSellerProduct = createAsyncThunk<
   }
 });
 
-// ✅ 4. Delete product
+//  4. Delete product
 export const deleteSellerProduct = createAsyncThunk<
   number, // productId
   { productId: number; jwt: string | null },

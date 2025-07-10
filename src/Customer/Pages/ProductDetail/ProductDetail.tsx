@@ -604,14 +604,12 @@
 import React, { useState, useEffect } from 'react';
 import {
   Add,
-  Favorite,
-  FavoriteBorder,
+
   LocalShipping,
   Remove,
   StarBorder,
   WorkspacePremium,
   ShoppingCart,
-  Share,
   CheckCircle,
   ExpandMore,
   ArrowBack,
@@ -640,7 +638,7 @@ import {
   Tooltip,
   CircularProgress,
 } from '@mui/material';
-import { teal, grey, red } from '@mui/material/colors';
+import { teal} from '@mui/material/colors';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import SimilarProduct from './SimilarProduct';
@@ -657,7 +655,7 @@ const ProductDetail = () => {
   // State management
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [wishlisted, setWishlisted] = useState(false);
+
   const [tabValue, setTabValue] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
@@ -690,7 +688,7 @@ useEffect(() => {
   }, []);
 
   // Event handlers
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
     if (isMobile) {
       setTimeout(() => {
@@ -757,11 +755,6 @@ useEffect(() => {
 
 
   
-  const handleWishlist = () => {
-    setWishlisted(!wishlisted);
-    setSnackbarMessage(wishlisted ? 'Removed from wishlist' : 'Added to wishlist');
-    setSnackbarOpen(true);
-  };
 
   const handleAccordionChange = (panel: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpandedAccordion(isExpanded ? panel : null);
@@ -772,12 +765,6 @@ useEffect(() => {
     setSelectedImage(index % (product?.images?.length || 1));
   };
 
-  const handleQuickBuy = () => {
-    handleAddToCart();
-    setTimeout(() => {
-      setSnackbarMessage('Proceeding to checkout...');
-    }, 1500);
-  };
 
   if (productLoading) {
     return (
@@ -1326,10 +1313,11 @@ useEffect(() => {
         <h1>Similar Products</h1>
       </div>
       <div>
-       <SimilarProduct
-         categoryId={product.category?.id}
-         productId={product.id}
-       />
+  {product.category?.id && (
+  <SimilarProduct categoryId={product.category.id} productId={0} />
+)}
+
+
       </div>
 
       {/* Size Guide Dialog */}

@@ -38,7 +38,7 @@ import GridTable from "./Admin/Pagess/HomePages/GridTable";
 import SellerTable from "./Admin/Pagess/Seller/SellerTable";
 
 // Redux Store
-import Store, { useAppDispatch, useAppSelector } from "./State/Store";
+import  { useAppDispatch, useAppSelector } from "./State/Store";
 import { fetchSellerProfile } from "./State/Sellers/sellerSlice";
 import { fetchUserProfile } from "./Customer/Pages/Auth/authSlice";
 import Wishlist from "./Customer/Pages/Wishlist/Wishlist";
@@ -59,8 +59,8 @@ function App() {
   useEffect(() => {
     dispatch(createHomecategories(homeCategories))
       .unwrap()
-      .then(() => console.log("✅ Home categories created successfully"))
-      .catch((err) => console.error("❌ Error seeding home categories:", err));
+      .then()
+      .catch();
   }, [dispatch]);
 
   // ✅ Fetch seller profile if logged in

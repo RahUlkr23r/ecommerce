@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../../State/Store';
 import { fetchSellerTransactions } from '../../../State/Sellers/transactionSlice';
 import dayjs from 'dayjs';
 
+
 const columns = [
   { id: 'date', label: 'Date', minWidth: 120 },
   { id: 'customerDetail', label: 'Customer Detail', minWidth: 150 },
@@ -30,31 +31,22 @@ const columns = [
 ];
 
 const getStatusColor = (status: string, type: 'payment' | 'order') => {
+  const normalized = status?.toUpperCase();
   if (type === 'payment') {
-    switch (status) {
-      case 'PENDING':
-        return 'default';
-      case 'PROCESSING':
-        return 'info';
-      case 'COMPLETED':
-        return 'success';
-      case 'FAILED':
-        return 'error';
-      default:
-        return 'default';
+    switch (normalized) {
+      case 'PENDING': return 'default';
+      case 'PROCESSING': return 'info';
+      case 'COMPLETED': return 'success';
+      case 'FAILED': return 'error';
+      default: return 'default';
     }
   } else {
-    switch (status) {
-      case 'PENDING':
-        return 'warning';
-      case 'SHIPPED':
-        return 'info';
-      case 'DELIVERED':
-        return 'success';
-      case 'CANCELLED':
-        return 'error';
-      default:
-        return 'default';
+    switch (normalized) {
+      case 'PENDING': return 'warning';
+      case 'SHIPPED': return 'info';
+      case 'DELIVERED': return 'success';
+      case 'CANCELLED': return 'error';
+      default: return 'default';
     }
   }
 };
@@ -92,7 +84,6 @@ const TransactionTable: React.FC = () => {
     maximumFractionDigits: 2,
   });
 
-  // Filter and sort
   const filtered = transactions.filter((txn) => {
     const paymentStatus = txn.order.paymentDetails?.status ?? '';
     const orderStatus = txn.order.orderStatus ?? '';
@@ -159,7 +150,7 @@ const TransactionTable: React.FC = () => {
               {columns.map((col) => (
                 <TableCell
                   key={col.id}
-                  align={col.align ?? 'left'}
+                 
                   style={{ minWidth: col.minWidth }}
                 >
                   {col.label}
@@ -177,7 +168,7 @@ const TransactionTable: React.FC = () => {
               </TableRow>
             ) : error ? (
               <TableRow>
-                <TableCell colSpan={6} align="center" style={{ color: 'red' }}>
+                <TableCell colSpan={6} align="center" sx={{ color: 'error.main' }}>
                   {error}
                 </TableCell>
               </TableRow>
@@ -198,7 +189,9 @@ const TransactionTable: React.FC = () => {
 
                 return (
                   <TableRow hover key={idx}>
-                    <TableCell>{dayjs(txn.date).format('YYYY-MM-DD')}</TableCell>
+                    <TableCell>
+                      {dayjs(txn.date).format('YYYY-MM-DD')}
+                    </TableCell>
                     <TableCell>{customerDetail}</TableCell>
                     <TableCell>{orderSummary}</TableCell>
                     <TableCell>

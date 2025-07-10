@@ -22,11 +22,11 @@ export const fetchAllCoupons = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BASE_URL}/all`, getAuthHeader());
-      console.log("Fetched coupons:", response.data);
+  
 
       return response.data as Coupon[];
     } catch (error: any) {
-      console.error("Error fetching coupons:", error);
+  
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch coupons');
     }
   }
@@ -38,10 +38,10 @@ export const createCoupon = createAsyncThunk(
   async (coupon: Omit<Coupon, 'id'>, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${BASE_URL}/admin/create`, coupon, getAuthHeader());
-      console.log("coupon created successfully",response.data)
+  
       return response.data as Coupon;
     } catch (error: any) {
-      console.log("coupon created error ", error)
+    
       return rejectWithValue(error.response?.data?.message || 'Failed to create coupon');
     }
   }

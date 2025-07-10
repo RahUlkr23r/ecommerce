@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -13,9 +13,7 @@ import {
 import {
   ShoppingCart,
   AttachMoney,
-  HourglassEmpty,
   AddBox,
-  ViewList,
   Inventory,
   TrendingUp,
   Cancel,
@@ -146,8 +144,8 @@ const Dashboard = () => {
 
       {/* KPIs Section */}
       <Grid container spacing={3}>
-        {metrics.map((metric, idx) => (
-          <Grid item xs={12} sm={6} md={4} key={idx}>
+        {metrics.map((metric) => (
+          <Grid>
             <Card
               elevation={0}
               sx={{
@@ -194,7 +192,7 @@ const Dashboard = () => {
 
       {/* Quick Actions */}
       <Grid container spacing={3} mt={4}>
-        <Grid item xs={12} md={6}>
+        <Grid >
           <Paper 
             elevation={0} 
             sx={{ 
@@ -212,8 +210,8 @@ const Dashboard = () => {
             </Box>
             <Divider sx={{ mb: 2, backgroundColor: 'divider' }} />
             <Grid container spacing={2}>
-              {quickActions.map((action, index) => (
-                <Grid item xs={12} key={index}>
+              {quickActions.map((action) => (
+                <Grid>
                   <Button
                     fullWidth
                     variant={action.variant}
@@ -248,7 +246,7 @@ const Dashboard = () => {
         </Grid>
 
         {/* Recent Activity or Stats Section */}
-        <Grid item xs={12} md={6}>
+        <Grid >
           <Paper 
             elevation={0} 
             sx={{ 

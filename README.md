@@ -1,54 +1,156 @@
-# React + TypeScript + Vite
+🛒 E-Commerce Web Application
+An end-to-end full-stack eCommerce web application built using React, Redux, Material UI, and Spring Boot. It supports customer and seller flows, product management, checkout, order tracking, and admin deals — all in one scalable platform.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🚀 Features
+👤 Customer
+User Signup/Login with OTP (Email-based)
 
-Currently, two official plugins are available:
+Browse products by categories/subcategories
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Search and filter products
 
-## Expanding the ESLint configuration
+Product detail page with:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Image carousel
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Sizes, colors, reviews
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Similar product suggestions
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Add to Cart & Wishlist
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Checkout with address & payment integration (Razorpay/Stripe)
+
+Order tracking and history
+
+🛍️ Seller
+Seller registration & login with OTP
+
+Add/Edit/Delete products
+
+View own product listings
+
+Manage orders and view transaction history
+
+🛠️ Admin
+Create category-based deals
+
+Manage home categories
+
+Dashboard for monitoring
+
+🧰 Tech Stack
+Frontend
+React.js
+
+Redux Toolkit
+
+Material UI (MUI)
+
+Formik + Yup (Form validation)
+
+Axios (API calls)
+
+Cloudinary (Image upload)
+
+Backend
+Spring Boot 3
+
+Spring Security + JWT (Authentication)
+
+MySQL (Database)
+
+Lombok (Boilerplate reduction)
+
+JPA/Hibernate (ORM)
+
+📦 Project Structure
+bash
+Copy
+Edit
+/frontend         // React + Redux Frontend
+/src
+  /components
+  /pages
+  /State          // Redux store & slices
+  /api            // Axios configs
+  /utils
+
+/backend          // Spring Boot Backend
+/src
+  /controller
+  /service
+  /model
+  /repository
+  /config         // JWT + Security
+📸 Screenshots
+Add some UI screenshots like:
+
+Homepage
+
+Product Detail
+
+Cart/Checkout
+
+Seller Dashboard
+
+Admin Deal Management
+
+🛠️ Setup Instructions
+Prerequisites
+Node.js (v18+)
+
+Java 17+
+
+MySQL
+
+Maven
+
+1. Backend Setup
+bash
+Copy
+Edit
+cd backend
+# Configure application.properties with your DB
+# Create DB: ecommerce
+
+mvn clean install
+mvn spring-boot:run
+2. Frontend Setup
+bash
+Copy
+Edit
+cd frontend
+npm install
+npm start
+Make sure to configure your .env for frontend if you're using API base URLs, Cloudinary, or Razorpay keys.
+
+📬 API Endpoints (Sample)
+Method	Endpoint	Description
+POST	/auth/signup	Register user/seller
+POST	/auth/send-otp	Send OTP to email
+POST	/auth/signin	OTP-based login
+GET	/products/category/{id}	Fetch by category
+POST	/order/create	Place an order
+POST	/seller/product	Add product (seller)
+GET	/admin/deals	Admin deals
+
+✅ Todo (In Progress)
+✅ Responsive Mobile UI
+
+✅ JWT refresh token logic
+
+⏳ Add Product Ratings by Users
+
+⏳ Admin analytics dashboard
+
+⏳ Inventory Management for sellers
+
+⏳ Delivery partner module
+
+🙋‍♂️ Author
+Rahul Kumar 
+Full Stack Developer
+📧 rahulkumar8684singh@gmail.com
+📞 +91-9334398684
+

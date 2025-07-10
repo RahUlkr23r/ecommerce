@@ -21,10 +21,10 @@ export const fetchSellerProfile = createAsyncThunk<
           Authorization: `Bearer ${jwt}`,
         },
       });
-      console.log("fetch seller profile", response.data);
+   
       return response.data;
     } catch (error: any) {
-      console.log("error.....", error);
+     
       return rejectWithValue({
         message: error.response?.data?.message || error.message,
         status: error.response?.status,

@@ -12,7 +12,7 @@ export const fetchSellerTransactions = createAsyncThunk<
     const response = await api.get("/api/transactions/seller", {
       headers: { Authorization: `Bearer ${jwt}` },
     });
-        console.log("fetch translational record",response.data)
+     
     return response.data;
   } catch (error: any) {
     return rejectWithValue(
@@ -31,7 +31,7 @@ export const fetchAllTransactions = createAsyncThunk<
     const response = await api.get<Transaction[]>("/api/transactions/all", {
       headers: { Authorization: `Bearer ${jwt}` },
     });
-    console.log("fetch translational record",response.data)
+
     return response.data;
   } catch (error: any) {
     return rejectWithValue(

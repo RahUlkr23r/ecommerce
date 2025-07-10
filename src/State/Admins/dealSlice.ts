@@ -24,7 +24,7 @@ export const fetchAllDeals = createAsyncThunk(
       const response = await axios.get(`${BASE_URL}/all`, getAuthHeader());
       return response.data as Deals[];
     } catch (error: any) {
-      console.error("Error fetching deals:", error);
+    
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch deals');
     }
   }
@@ -36,10 +36,10 @@ export const createDeal = createAsyncThunk(
   async (deal: Deals, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${BASE_URL}`, deal, getAuthHeader());
-      console.log("Deal created successfully:", response.data);
+  
       return response.data as Deals;
     } catch (error: any) {
-      console.error("Error creating deal:", error);
+   
       return rejectWithValue(error.response?.data?.message || 'Failed to create deal');
     }
   }
@@ -53,7 +53,7 @@ export const updateDeal = createAsyncThunk(
       const response = await axios.patch(`${BASE_URL}/${id}`, deal, getAuthHeader());
       return response.data as Deals;
     } catch (error: any) {
-      console.error("Error updating deal:", error);
+      
       return rejectWithValue(error.response?.data?.message || 'Failed to update deal');
     }
   }
@@ -67,7 +67,7 @@ export const deleteDeal = createAsyncThunk<number, number>(
       await axios.delete(`${BASE_URL}/${id}`, getAuthHeader());
       return id;
     } catch (error: any) {
-      console.error("Error deleting deal:", error);
+    
       return rejectWithValue(error.response?.data?.message || 'Failed to delete deal');
     }
   }

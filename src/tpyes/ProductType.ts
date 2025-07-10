@@ -20,7 +20,7 @@ export interface Product {
   images: string[];
   totalPrice:number;
   rating: number;   // Consider adding if you track actual rating
-  category?: Category;
+  category: Category;
   seller?: Seller;
   createdAt: Date | string; // More flexible for API responses
   reviews: Review;  // Fixed typo (was 'review')

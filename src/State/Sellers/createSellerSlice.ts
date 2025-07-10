@@ -23,11 +23,11 @@ export const createSeller = createAsyncThunk(
   async (sellerData: Seller, { rejectWithValue }) => {
     try {
       const response = await axios.post('http://localhost:8989/sellers/create-seller', sellerData);
-      console.log('Seller created successfully:', response.data);
+   
       return response.data;
       
     } catch (error: any) {
-        console.error('Error creating seller:', error);
+     
       return rejectWithValue(
         error.response?.data?.message || 'Failed to create seller'
       );

@@ -25,7 +25,7 @@ const columns: readonly Column[] = [
   { id: 'update', label: 'Update', minWidth: 100, align: 'center' },
 ];
 
-export default function HomeCategoryTable({ data }: { data?: HomeCategory[] }) {
+const HomeCategoryTable: React.FC<{ data?: HomeCategory[] }> = ({ data }) => {
   const dispatch = useAppDispatch();
   const reduxCategories = useAppSelector(state => state.admin.homeCategories);
   const error = useAppSelector(state => state.admin.error);
@@ -38,16 +38,19 @@ export default function HomeCategoryTable({ data }: { data?: HomeCategory[] }) {
   const [selectedCategory, setSelectedCategory] = useState<HomeCategory | null>(null);
   const [editedName, setEditedName] = useState('');
   const [editedImage, setEditedImage] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     if (!data) {
-      dispatch(fetchAllHomeCategories());
+      const token = localStorage.getItem('jwt') || '';
+      dispatch(fetchAllHomeCategories(token));
     }
   }, [dispatch, data]);
 
   const categoriesToShow = data ?? reduxCategories;
 
   const handleChangePage = (_: unknown, newPage: number) => setPage(newPage);
+
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -67,18 +70,34 @@ export default function HomeCategoryTable({ data }: { data?: HomeCategory[] }) {
 
   const handleUpdate = async () => {
     if (selectedCategory) {
-      const updatedData = {
+      if (
+        selectedCategory.name === editedName.trim() &&
+        selectedCategory.image === editedImage.trim()
+      ) {
+        alert('No changes made');
+        return;
+      }
+
+      const updatedData: HomeCategory = {
         ...selectedCategory,
-        name: editedName,
-        image: editedImage,
+        name: editedName.trim(),
+        image: editedImage.trim(),
       };
+
       try {
-        await dispatch(updateHomeCategory({ id: Number(selectedCategory.categoryId!), data: updatedData })).unwrap();
+        setIsUpdating(true);
+        await dispatch(updateHomeCategory({
+          id: Number(selectedCategory.id), data: updatedData,
+          jwt: ''
+        })).unwrap();
         alert('Category updated successfully');
         handleDialogClose();
-        dispatch(fetchAllHomeCategories()); // Refresh list
+        const token = localStorage.getItem('jwt') || '';
+        dispatch(fetchAllHomeCategories(token));
       } catch (err) {
         alert('Update failed');
+      } finally {
+        setIsUpdating(false);
       }
     }
   };
@@ -86,7 +105,7 @@ export default function HomeCategoryTable({ data }: { data?: HomeCategory[] }) {
   return (
     <>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{ maxHeight: 480 }}>
           <Table stickyHeader aria-label="category table">
             <TableHead>
               <TableRow>
@@ -120,11 +139,16 @@ export default function HomeCategoryTable({ data }: { data?: HomeCategory[] }) {
                 categoriesToShow
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((category, index) => (
-                    <TableRow hover key={category.categoryId}>
+                    <TableRow hover key={category.id}>
                       <TableCell>{page * rowsPerPage + index + 1}</TableCell>
-                      <TableCell>{category.categoryId}</TableCell>
+                      <TableCell>{category.id}</TableCell>
                       <TableCell>
-                        <Avatar src={category.image} variant="square" sx={{ width: 100, height: 100 }} />
+                        <Avatar
+                          src={category.image || ''}
+                          alt={category.name}
+                          variant="square"
+                          sx={{ width: 100, height: 100 }}
+                        />
                       </TableCell>
                       <TableCell>{category.name}</TableCell>
                       <TableCell align="center">
@@ -151,7 +175,7 @@ export default function HomeCategoryTable({ data }: { data?: HomeCategory[] }) {
       </Paper>
 
       {/* Edit Dialog */}
-      <Dialog open={editDialogOpen} onClose={handleDialogClose}>
+      <Dialog open={editDialogOpen} onClose={handleDialogClose} maxWidth="sm" fullWidth>
         <DialogTitle>Edit Home Category</DialogTitle>
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
           <TextField
@@ -169,9 +193,13 @@ export default function HomeCategoryTable({ data }: { data?: HomeCategory[] }) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
-          <Button variant="contained" onClick={handleUpdate}>Update</Button>
+          <Button variant="contained" onClick={handleUpdate} disabled={isUpdating}>
+            {isUpdating ? 'Updating...' : 'Update'}
+          </Button>
         </DialogActions>
       </Dialog>
     </>
   );
-}
+};
+
+export default HomeCategoryTable;

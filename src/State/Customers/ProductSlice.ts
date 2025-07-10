@@ -69,10 +69,10 @@ export const fetchAllProducts = createAsyncThunk<ProductsResponse, FetchProducts
           ...params,
         },
       });
-      console.log("fetching all the product ", response.data);
+  
       return response.data;
     } catch (error: any) {
-      console.error("Error fetching all products:", error);
+     
       return rejectWithValue(error.response?.data?.message || error.message);
     }
   }

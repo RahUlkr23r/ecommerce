@@ -46,7 +46,7 @@ export const login = createAsyncThunk<
       const response = await api.post("/auth/signing", loginRequest);
       const jwt = response.data.jwt;
       localStorage.setItem("jwt", jwt);
-      console.log("login data",response.data)
+    
       return response.data;
     } catch (error: any) {
       return rejectWithValue({
@@ -90,10 +90,10 @@ export const fetchUserProfile = createAsyncThunk<
       const response = await api.get("/api/user/profile", {
         headers: { Authorization: `Bearer ${jwt}` },
       });
-      console.log("data",response.data)
+      
       return response.data;
     } catch (error: any) {
-      console.error("Error fetching profile:", error);
+  
       return rejectWithValue({
         message: error.response?.data?.message || "Failed to fetch profile"
       });

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import { api } from "../../Config/Api";
 import { Review } from "../../tpyes/reviewType";
 
@@ -20,10 +20,10 @@ export const fetchReviewsByProductId = createAsyncThunk<Review[], number>(
   async (productId, { rejectWithValue }) => {
     try {
       const response = await api.get(`/reviews/product/${productId}`);
-      console.log("Reviews fetched:", response.data);
+  
       return response.data;
     } catch (error: any) {
-      console.log("Fetch error:", error);
+
       return rejectWithValue(error.response?.data?.message || error.message);
     }
   }
@@ -47,10 +47,10 @@ export const createReview = createAsyncThunk<
           headers: { Authorization: `Bearer ${jwt}` },
         }
       );
-      console.log("review created",response.data)
+ 
       return response.data;
     } catch (error: any) {
-      console.log("review error",error)
+
       return rejectWithValue(error.response?.data?.message || error.message);
     }
   }
@@ -94,10 +94,10 @@ export const deleteReview = createAsyncThunk<
     await api.delete(`/reviews/review/${reviewId}/delete`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log("Review deleted with ID:", reviewId);
+  
     return reviewId;
   } catch (error: any) {
-    console.log("Delete error:", error);
+
     return rejectWithValue(error.response?.data?.message || error.message);
   }
 });

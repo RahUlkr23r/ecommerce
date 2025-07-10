@@ -1,4 +1,4 @@
-import React from 'react'
+
 import OrderTable from './OrderTable';
 
 const orders = () => {

@@ -112,7 +112,7 @@ const AddProduct = () => {
       };
 
       try {
-        await dispatch(createProduct({ request: payload, jwt: localStorage.getItem('jwt') })).unwrap();
+        await dispatch(createProduct({ request: payload, jwt: localStorage.getItem('jwt')||"" })).unwrap();
         toast.success("✅ Product created successfully!");
         resetForm();
         setCategoryLevel2Options([]);

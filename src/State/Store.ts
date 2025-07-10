@@ -8,7 +8,7 @@ import productSlice from "../State/Customers/ProductSlice"
 import authSlice from "../Customer/Pages/Auth/authSlice"
 import CartSlice from "../State/Customers/CartSlice"
 import orderSlice from "../State/Customers/OrderSlice"
-import addressReducer from '../State/Customers/AddressSlice';
+
 import WishlistSlice from '../State/Customers/WishlistSlice'
 import sellerOrderSlice from '../State/Sellers/sellerOrderSlice';
 import transactionSlice from '../State/Sellers/transactionSlice'
@@ -25,7 +25,7 @@ product:productSlice,
 auth:authSlice,
 cart:CartSlice,
 order:orderSlice,
-address:addressReducer,
+
 wishlist:WishlistSlice,
 customer:customerSlice,
 review: reviewSlice,

@@ -14,7 +14,7 @@ export const fetchSellerOrders = createAsyncThunk<
       const response = await api.get<Order[]>("/api/seller/orders", {
         headers: { Authorization: `Bearer ${jwt}` },
       });
-      console.log("Fetched seller orders:", response.data);
+
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -40,7 +40,7 @@ export const updateSellerOrderStatus = createAsyncThunk<
           headers: { Authorization: `Bearer ${jwt}` },
         }
       );
-      console.log("Order status updated:", response.data);
+
       return response.data;
     } catch (error: any) {
       return rejectWithValue(

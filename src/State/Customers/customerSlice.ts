@@ -8,7 +8,7 @@ export const fetchHomePageData = createAsyncThunk<HomeData>(
     async (_, { rejectWithValue }) => {
         try {
             const response = await api.get<HomeData>('/home-page');
-            console.log("the fetch data",response.data)
+          
             return response.data;
           
         } catch (error: any) {
@@ -23,7 +23,7 @@ export const createHomecategories = createAsyncThunk<HomeData, HomeCategory[]>(
     async (homeCategories, { rejectWithValue }) => {
         try {
             const response = await api.post<HomeData>('/home/categories', homeCategories);
-            console.log("categories data",response.data)
+         
             return response.data;
         } catch (error: any) {
             return rejectWithValue(error.response?.data?.message || 'Failed to create home categories');
