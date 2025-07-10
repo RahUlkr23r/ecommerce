@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button, Box, Typography } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';

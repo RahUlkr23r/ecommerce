@@ -1,36 +1,5 @@
-// import React, { useEffect } from 'react';
-// import UserAddress from './UserAddress';
-// import { useAppDispatch, useAppSelector } from '../../../../State/Store';
-// import { fetchUserProfile } from '../../Auth/authSlice';
 
-// const Address = () => {
-//   const dispatch = useAppDispatch();
-
-//   useEffect(() => {
-//     const jwt = localStorage.getItem('jwt') || '';
-//     if (jwt) dispatch(fetchUserProfile({ jwt }));
-//   }, [dispatch]);
-
-//   // 🔧 FIXED: Correct key is 'addresses' (plural)
-//   const addresses = useAppSelector((store) => store.auth.user?.addresses || []);
-
-//   return (
-//     <div className="space-y-3">
-//       {addresses.length > 0 ? (
-//         addresses.map((address, idx) => (
-//           <UserAddress key={address.id ?? idx} address={address} />
-//         ))
-//       ) : (
-//         <p className="text-gray-500">No addresses found</p>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Address;
-
-
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import AddressCard from '../../Checkout/AddressCard';
 import { useAppDispatch, useAppSelector } from '../../../../State/Store';
 import { fetchUserProfile } from '../../Auth/authSlice';
@@ -51,14 +20,6 @@ const Address = () => {
     setSelectedAddressId(id);
   };
 
-  const handleSubmit = () => {
-    if (!selectedAddressId) {
-      alert('Please select an address');
-      return;
-    }
-    console.log('Selected Address ID:', selectedAddressId);
-    // 🚀 You can now send `selectedAddressId` to your backend (order API)
-  };
 
   return (
     <div className="space-y-3">

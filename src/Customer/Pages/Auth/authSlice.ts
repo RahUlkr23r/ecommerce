@@ -20,97 +20,84 @@ export const sendLoginSignupOtp = createAsyncThunk<
   { message: string },
   { email: string; role: string },
   { rejectValue: KnownError }
->(
-  "auth/sendLoginSignupOtp",
-  async ({ email, role }, { rejectWithValue }) => {
-    try {
-      const response = await api.post("/auth/sent/login-signup-otp", { email, role });
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue({
-        message: error.response?.data?.message || "Error sending OTP"
-      });
-    }
+>("auth/sendLoginSignupOtp", async ({ email, role }, { rejectWithValue }) => {
+  try {
+    const response = await api.post("/auth/sent/login-signup-otp", { email, role });
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue({
+      message: error.response?.data?.message || "Error sending OTP",
+    });
   }
-);
+});
 
-// Login
+// ✅ OTP-based Login
 export const login = createAsyncThunk<
   AuthResponse,
-  { email: string; password: string },
+  { email: string; otp: string },
   { rejectValue: KnownError }
->(
-  "auth/signin",
-  async (loginRequest, { rejectWithValue }) => {
-    try {
-      const response = await api.post("/auth/signing", loginRequest);
-      const jwt = response.data.jwt;
-      localStorage.setItem("jwt", jwt);
-    
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue({
-        message: error.response?.data?.message || "Login failed"
-      });
-    }
+>("auth/signin", async ({ email, otp }, { rejectWithValue }) => {
+  try {
+    const response = await api.post("/auth/signing", { email, otp, role: "CUSTOMER" });
+    const jwt = response.data.jwt;
+    const user = response.data.user;
+
+    localStorage.setItem("jwt", jwt);
+    localStorage.setItem("user", JSON.stringify(user));
+
+    return { jwt, user };
+  } catch (error: any) {
+    return rejectWithValue({
+      message: error.response?.data?.message || "Login failed",
+    });
   }
-);
+});
 
 // Signup with proper typing
 export const signup = createAsyncThunk<
   AuthResponse,
   { email: string; fullname: string; otp: string; role: string },
   { rejectValue: KnownError }
->(
-  "auth/signup",
-  async (signupRequest, { rejectWithValue }) => {
-    try {
-      const response = await api.post("/auth/signup", signupRequest);
-      const { jwt, user } = response.data;
-      localStorage.setItem("jwt", jwt);
-      localStorage.setItem("user", JSON.stringify(user));
-      return { jwt, user };
-    } catch (error: any) {
-      return rejectWithValue({
-        message: error.response?.data?.message || "Signup failed"
-      });
-    }
+>("auth/signup", async (signupRequest, { rejectWithValue }) => {
+  try {
+    const response = await api.post("/auth/signup", signupRequest);
+    const { jwt, user } = response.data;
+    localStorage.setItem("jwt", jwt);
+    localStorage.setItem("user", JSON.stringify(user));
+    return { jwt, user };
+  } catch (error: any) {
+    return rejectWithValue({
+      message: error.response?.data?.message || "Signup failed",
+    });
   }
-);
+});
 
 // Fetch profile
 export const fetchUserProfile = createAsyncThunk<
   User,
   { jwt: string },
   { rejectValue: KnownError }
->(
-  "auth/fetchUserProfile",
-  async ({ jwt }, { rejectWithValue }) => {
-    try {
-      const response = await api.get("/api/user/profile", {
-        headers: { Authorization: `Bearer ${jwt}` },
-      });
-      
-      return response.data;
-    } catch (error: any) {
-  
-      return rejectWithValue({
-        message: error.response?.data?.message || "Failed to fetch profile"
-      });
-    }
+>("auth/fetchUserProfile", async ({ jwt }, { rejectWithValue }) => {
+  try {
+    const response = await api.get("/api/user/profile", {
+      headers: { Authorization: `Bearer ${jwt}` },
+    });
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue({
+      message: error.response?.data?.message || "Failed to fetch profile",
+    });
   }
-);
+});
 
 // Logout
-export const userlogout = createAsyncThunk(
-  "auth/userlogout",
-  async (navigate: NavigateFunction, { }) => {
-    localStorage.clear();
-    navigate("/");
-    return null;
-  }
-);
+export const userlogout = createAsyncThunk("auth/userlogout", async (navigate: NavigateFunction) => {
+  localStorage.clear();
+  navigate("/");
+  return null;
+});
 
+// State interface
 interface AuthState {
   jwt: string | null;
   otpSent: boolean;
@@ -120,27 +107,27 @@ interface AuthState {
   error: string | null;
 }
 
+// Initial state
 const initialState: AuthState = {
   jwt: localStorage.getItem("jwt") || null,
   otpSent: false,
   isLoggedIn: !!localStorage.getItem("jwt"),
-  user: localStorage.getItem("user") 
-    ? JSON.parse(localStorage.getItem("user")!) 
-    : null,
+  user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")!) : null,
   loading: false,
   error: null,
 };
 
+// Slice
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     clearError: (state) => {
       state.error = null;
-    }
+    },
   },
   extraReducers: (builder) => {
-    // OTP Cases
+    // Send OTP
     builder
       .addCase(sendLoginSignupOtp.pending, (state) => {
         state.loading = true;
@@ -155,7 +142,7 @@ const authSlice = createSlice({
         state.error = action.payload?.message || "Failed to send OTP";
       });
 
-    // Login Cases
+    // OTP Login
     builder
       .addCase(login.pending, (state) => {
         state.loading = true;
@@ -172,7 +159,7 @@ const authSlice = createSlice({
         state.error = action.payload?.message || "Login failed";
       });
 
-    // Signup Cases
+    // Signup
     builder
       .addCase(signup.pending, (state) => {
         state.loading = true;
@@ -189,7 +176,7 @@ const authSlice = createSlice({
         state.error = action.payload?.message || "Signup failed";
       });
 
-    // Profile Cases
+    // Fetch Profile
     builder
       .addCase(fetchUserProfile.pending, (state) => {
         state.loading = true;
@@ -206,7 +193,7 @@ const authSlice = createSlice({
         state.error = action.payload?.message || "Failed to fetch profile";
       });
 
-    // Logout Case
+    // Logout
     builder.addCase(userlogout.fulfilled, (state) => {
       state.jwt = null;
       state.user = null;
@@ -218,7 +205,6 @@ const authSlice = createSlice({
 
 export const { clearError } = authSlice.actions;
 export default authSlice.reducer;
-
 
 
 

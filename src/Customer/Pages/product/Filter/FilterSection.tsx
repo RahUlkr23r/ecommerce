@@ -1,25 +1,3 @@
-// import { Button, Divider } from "@mui/material"
-
-
-// const FilterSection = () => {
-//   return (
-//     <div className="-z-50 space-y-5 bg-white">
-//         <div className="flex item-center justify-between h-[40px]px-9 lg:norder-r">
-//             <p className="text-lg font-semibold">
-//                 Filter
-//             </p>
-//             <Button size='small'className='text-teal-600 curser-pointer font-semibold'>
-//                 clear all
-//             </Button>
-//         </div>
-//         <Divider/>
-//         <section></section>
-//     </div>
-
-//   )
-// }
-
-// export default FilterSection
 
 
 import {
@@ -30,7 +8,7 @@ import {
   FormGroup,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Color } from "./Color";
 import { Price } from "./Price";

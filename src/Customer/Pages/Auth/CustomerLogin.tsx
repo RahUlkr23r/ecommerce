@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../State/Store';
 import { useFormik } from 'formik';
 import { sendLoginSignupOtp } from './authSlice';
@@ -32,6 +32,7 @@ const CustomerLogin = () => {
     initialValues: {
       email: '',
       otp: '',
+   
     },
     validationSchema,
     onSubmit: (values) => {

@@ -1,21 +1,4 @@
-// import React from 'react'
-// import { Product } from '../../../tpyes/ProductType'
 
-// const WishlistCard = ({item}:{item:Product}) => {
-//   return (
-//     <div className='w-6 relative'>
-//       <div className='w-full '>
-//         <img src={item.images[0]} alt="" className='object-top w-full' />
-
-// </div>
-
-
-
-//     </div>
-//   )
-// }
-
-// export default WishlistCard
 import React from 'react';
 import { useAppDispatch } from '../../../State/Store';
 import { removeFromWishlist } from '../../../State/Customers/WishlistSlice';
