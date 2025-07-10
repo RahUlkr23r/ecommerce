@@ -9,7 +9,7 @@ import BecomeSellerFormStep4 from './BecomeSellerFormStep4';
 import { useAppDispatch, useAppSelector } from '../../../State/Store';
 import { createSeller, resetSellerState } from '../../../State/Sellers/createSellerSlice';
 import { useNavigate } from 'react-router-dom';
-import { AccountStatus, Seller } from '../../../tpyes/Sellertype'; // Adjust the path if needed
+import {  Seller } from '../../../tpyes/Sellertype'; // Adjust the path if needed
 
 const steps = ['Tax Details & Mobile', 'Pickup Address', 'Bank Details', 'Supplier Details'];
 
@@ -104,45 +104,46 @@ const SellerAccountForm = () => {
       }),
     }),
 
-    onSubmit: (values) => {
+    onSubmit: () => {
       const payload: Seller = {
-// will be ignored by backend or set to auto-generated
-  sellerName: formik.values.sellerInfo.sellerName,
-  email: formik.values.sellerInfo.email,
-  password: formik.values.sellerInfo.password,
-  mobile: formik.values.mobile,
-  GSTIN: formik.values.GSTIN || null,
-  emailVarified: false,
-  role: 'SELLER', // ✅ Required!
-  accountStatus: 'PENDING_VERIFICATION', // ✅ One of the valid enum strings
+        // will be ignored by backend or set to auto-generated
+        sellerName: formik.values.sellerInfo.sellerName,
+        email: formik.values.sellerInfo.email,
+        password: formik.values.sellerInfo.password,
+        mobile: formik.values.mobile,
+        GSTIN: formik.values.GSTIN || null,
+        emailVarified: false,
+        role: 'SELLER', // ✅ Required!
+        accountStatus: 'PENDING_VERIFICATION', // ✅ One of the valid enum strings
 
-  bankDetails: {
-    accountNumber: formik.values.bankDetails.accountNumber,
-    ifscCode: formik.values.bankDetails.ifsc,
-    bankName: 'Unknown', // Optional: You can fill this from IFSC using Razorpay/Bank lookup later
-    accountHolderName: formik.values.bankDetails.accountHolderName,
-  },
+        bankDetails: {
+          accountNumber: formik.values.bankDetails.accountNumber,
+          ifscCode: formik.values.bankDetails.ifsc,
+          bankName: 'Unknown', // Optional: You can fill this from IFSC using Razorpay/Bank lookup later
+          accountHolderName: formik.values.bankDetails.accountHolderName,
+        },
 
-  businessDetails: {
-    banner: formik.values.sellerInfo.business.banner,
-    logo: formik.values.sellerInfo.business.logo,
-    bussinessName: formik.values.sellerInfo.business.businessName,
-    bussinessEmail: formik.values.sellerInfo.business.businessEmail,
-    bussinessMobile: formik.values.sellerInfo.business.businessMobile,
-    bussinessAddress: formik.values.sellerInfo.business.businessAddress,
-  },
+        businessDetails: {
+          banner: formik.values.sellerInfo.business.banner,
+          logo: formik.values.sellerInfo.business.logo,
+          bussinessName: formik.values.sellerInfo.business.businessName,
+          bussinessEmail: formik.values.sellerInfo.business.businessEmail,
+          bussinessMobile: formik.values.sellerInfo.business.businessMobile,
+          bussinessAddress: formik.values.sellerInfo.business.businessAddress,
+        },
 
-  pickupAddress: {
-    id: 0, // backend can ignore or auto-generate this
-    name: formik.values.pickupAddress.name,
-    address: formik.values.pickupAddress.address,
-    locality: formik.values.pickupAddress.locality,
-    city: formik.values.pickupAddress.city,
-    state: formik.values.pickupAddress.state,
-    pincode: formik.values.pickupAddress.pincode,
-    mobile: formik.values.pickupAddress.mobile,
-  },
-};
+        pickupAddress: {
+          id: 0, // backend can ignore or auto-generate this
+          name: formik.values.pickupAddress.name,
+          address: formik.values.pickupAddress.address,
+          locality: formik.values.pickupAddress.locality,
+          city: formik.values.pickupAddress.city,
+          state: formik.values.pickupAddress.state,
+          pincode: formik.values.pickupAddress.pincode,
+          mobile: formik.values.pickupAddress.mobile,
+        },
+        id: 0
+      };
 
       dispatch(createSeller(payload));
     },

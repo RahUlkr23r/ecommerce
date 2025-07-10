@@ -1,13 +1,13 @@
 import { HomeCategory } from "./HomeCategoryType";
- export interface Deals{
-     id?:number;
-     discount:number;
-     image:[];
-     name:string;
-     section:string;
-     category:HomeCategory;
+export interface Deals {
+  id?: number;
+  discount: number;
+  image: string[]; // ✅ Correctly typed
+  name: string;
+  section: string;
+  category: HomeCategory;
+}
 
- }
 
 
 

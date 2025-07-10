@@ -1,168 +1,14 @@
 
-
-// import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import { api } from "../../Config/Api";
-// import { Product } from "../../tpyes/ProductType"; // Ensure your Product type is correctly defined
-
-// // Define the request type for product creation
-// interface CreateProductRequest {
-//   name: string;
-//   price: number;
-//   images: string[];
-//   category: string[];
-//   description: string;
-//   color?: string[];
-//   size?: string[];
-//   stock?: number;
-//   brand?: string;
-//   // Add more fields if necessary
-// }
-
-// // ✅ Fetch seller products with safe error message
-// export const fetchSellerProducts = createAsyncThunk<Product[], string>(
-//   "sellerProduct/fetchAll",
-//   async (jwt, { rejectWithValue }) => {
-//     try {
-//       const response = await api.get<Product[]>(`/seller/products/all`, {
-//         headers: {
-//           Authorization: `Bearer ${jwt}`,
-//         },
-//       });
-//       console.log("Fetched seller products:", response.data);
-//       return response.data;
-//     } catch (error: any) {
-//       console.error("Error fetching seller products:", error);
-
-//       const message =
-//         error?.response?.data?.message ||
-//         error?.message ||
-//         "Error fetching seller products";
-
-//       return rejectWithValue(message);
-//     }
-//   }
-// );
-
-// // ✅ Create product with safe error message
-// export const createProduct = createAsyncThunk<
-//   Product,
-//   { request: CreateProductRequest; jwt: string | null }
-// >("sellerProduct/create", async ({ request, jwt }, { rejectWithValue }) => {
-//   try {
-//     const response = await api.post<Product>(`/seller/products`, request, {
-//       headers: {
-//         Authorization: `Bearer ${jwt}`,
-//       },
-//     });
-//     console.log("Product created:", response.data);
-//     return response.data;
-//   } catch (error: any) {
-//     console.error("Error creating product:", error);
-
-//     const message =
-//       error?.response?.data?.message ||
-//       error?.message ||
-//       "Error creating product";
-
-//     return rejectWithValue(message);
-//   }
-// });
-
-
-
-
-
-
-
-
-
-
-
-// // Define initial state
-// interface SellerProductState {
-//   products: Product[];
-//   loading: boolean;
-//   error: string | null;
-// }
-
-// const initialState: SellerProductState = {
-//   products: [],
-//   loading: false,
-//   error: null,
-// };
-
-// // Slice definition
-// const sellerProductSlice = createSlice({
-//   name: "sellerProduct",
-//   initialState,
-//   reducers: {
-//     resetProducts: (state) => {
-//       state.products = [];
-//       state.loading = false;
-//       state.error = null;
-//     },
-//   },
-//   extraReducers: (builder) => {
-//     builder
-//       // Fetch products
-//       .addCase(fetchSellerProducts.pending, (state) => {
-//         state.loading = true;
-//         state.error = null;
-//       })
-//       .addCase(fetchSellerProducts.fulfilled, (state, action) => {
-//         state.loading = false;
-//         state.products = action.payload;
-//         state.error = null;
-//       })
-//       .addCase(fetchSellerProducts.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error = action.payload as string;
-//       })
-//       // Create product
-//       .addCase(createProduct.pending, (state) => {
-//         state.loading = true;
-//         state.error = null;
-//       })
-//       .addCase(createProduct.fulfilled, (state, action) => {
-//         state.loading = false;
-//         state.products.push(action.payload);
-//         state.error = null;
-//       })
-//       .addCase(createProduct.rejected, (state, action) => {
-//         state.loading = false;
-//         state.error = action.payload as string;
-//       });
-//   },
-// });
-
-// // Export reducer and actions
-// export const { resetProducts } = sellerProductSlice.actions;
-// export default sellerProductSlice.reducer;
-
-// // Selectors
-// export const selectSellerProducts = (state: any) => state.sellerProduct.products;
-// export const selectSellerLoading = (state: any) => state.sellerProduct.loading;
-// export const selectSellerError = (state: any) => state.sellerProduct.error;
-
-
-
-
-
-
-
-
-
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../Config/Api";
 import { Product } from "../../tpyes/ProductType";
 
 // ---------- Types ----------
-
 interface CreateProductRequest {
   name: string;
   price: number;
   images: string[];
-  category: string[];
+  category: string; // ⬅️ Changed
   description: string;
   color?: string[];
   size?: string[];
@@ -217,7 +63,7 @@ export const createProduct = createAsyncThunk<
         Authorization: `Bearer ${jwt}`,
       },
     });
-
+ console.log("product created ",response.data)
     return response.data;
   } catch (error: any) {
 

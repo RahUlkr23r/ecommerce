@@ -6,7 +6,7 @@ export interface Review {
   reviewText: string;
   rating: number;
   productImages: string[];
-  product: Product;  // ⬅️ Marked as optional
+  product: Product; // optional? → if yes: product?: Product;
   user: User;
   createAt: string;
 }

@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '../../../State/Store';
 import { createDeal } from '../../../State/Admins/dealSlice';
 import { fetchAllHomeCategories } from '../../../State/Admins/adminSlice';
 import { HomeCategory } from '../../../tpyes/HomeCategoryType';
+import { Deals } from '../../../tpyes/dealType';
 
 const CreateDealTable: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -51,10 +52,21 @@ const CreateDealTable: React.FC = () => {
         return;
       }
 
-      const reqData = {
-        category: { id: selectedCategory.id },
-        discount: values.discount,
-      };
+const reqData: Deals = {
+  name: selectedCategory.name ?? '',
+  image: [selectedCategory.image], // if your API expects array
+  section: selectedCategory.section ?? '',
+  discount: values.discount,
+  category: {
+    categoryId: selectedCategory.categoryId, // ✅ Required
+    id: selectedCategory.id,
+    name: selectedCategory.name,
+    image: selectedCategory.image,
+    section: selectedCategory.section,
+  },
+};
+
+
 
       dispatch(createDeal(reqData));
       resetForm();

@@ -9,7 +9,7 @@ export type AccountStatus =
 
 // ✅ Main Seller Interface
 export interface Seller {
-  id?: number|null;
+  id: number;
   sellerName: string;
   email: string;
   emailVarified: boolean;

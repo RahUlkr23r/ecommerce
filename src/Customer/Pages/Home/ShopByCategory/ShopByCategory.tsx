@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { ShopByCategoryCard } from './ShopByCategoryCard';
 import { useAppSelector } from '../../../../State/Store';
 

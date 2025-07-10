@@ -16,12 +16,11 @@ const SimilarProductCard: React.FC<Props> = ({ product }) => {
   const images = product.images || [];
   const navigate = useNavigate();
 
-  const reviewCount = product.reviews?.length || 0;
-  const averageRating = reviewCount
-    ? (
-        product.reviews.reduce((sum, r) => sum + r.rating, 0) / reviewCount
-      ).toFixed(1)
-    : '0.0';
+const reviews = Array.isArray(product.reviews) ? product.reviews : [];
+const reviewCount = reviews.length;
+const averageRating = reviewCount
+  ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviewCount).toFixed(1)
+  : '0.0';
 
   // Auto-rotate images on hover
   useEffect(() => {

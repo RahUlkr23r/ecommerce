@@ -14,7 +14,7 @@ export const sendLoginSignupOtp = createAsyncThunk(
           role, // include role here
         });
       
-      
+      console.log(response.status)
       } catch (error: any) {
         return rejectWithValue(error.response?.data || "Error sending OTP");
       }

@@ -750,8 +750,10 @@ useEffect(() => {
     });
   };
   
-
-
+const averageRating =
+  Array.isArray(product?.reviews) && product.reviews.length > 0
+    ? product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
+    : 0;
 
 
   
@@ -946,24 +948,18 @@ useEffect(() => {
            {/* Rating */}
 <div className="flex items-center py-2 px-3 border w-fit rounded-full mt-4 gap-3 bg-gray-50">
   <div className="flex items-center gap-1">
-    <Rating
-      value={
-        Array.isArray(product.reviews) && product.reviews.length > 0
-          ? product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
-          : 0
-      }
-      precision={0.1}
-      readOnly
-      size="small"
-      emptyIcon={<StarBorder fontSize="inherit" />}
-    />
-    <span className="ml-1 font-medium">
-      {Array.isArray(product.reviews) && product.reviews.length > 0
-        ? (
-            product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
-          ).toFixed(1)
-        : '0.0'}
-    </span>
+  
+<Rating
+  value={averageRating}
+  precision={0.1}
+  readOnly
+  size="small"
+  emptyIcon={<StarBorder fontSize="inherit" />}
+/>
+
+<span className="ml-1 font-medium">
+  {averageRating.toFixed(1)} 
+</span>
   </div>
   <Divider orientation="vertical" flexItem className="!h-5" />
   <button
@@ -1313,10 +1309,9 @@ useEffect(() => {
         <h1>Similar Products</h1>
       </div>
       <div>
-  {product.category?.id && (
+     {typeof product.category?.id === 'number' && (
   <SimilarProduct categoryId={product.category.id} productId={0} />
 )}
-
 
       </div>
 

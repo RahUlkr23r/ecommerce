@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import AdminDrawerList from '../../Component/AdminDrawerList';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../State/Store';
@@ -9,13 +9,14 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const { auth } = useAppSelector((state) => state);
 
-  useEffect(() => {
-    if (!auth || (auth.user && String(auth.user.role) !== 'ADMIN')) {
-      navigate('/unauthorized');
-    } else {
-      dispatch(fetchAllHomeCategories());
-    }
-  }, [dispatch, auth, navigate]);
+ useEffect(() => {
+  if (!auth || (auth.user && String(auth.user.role) !== 'ADMIN')) {
+    navigate('/unauthorized');
+  } else {
+    const token = localStorage.getItem("jwt") || "";
+    dispatch(fetchAllHomeCategories(token));
+  }
+}, [dispatch, auth, navigate]);
 
   return (
     <div className="lg:flex lg:h-[90vh]">

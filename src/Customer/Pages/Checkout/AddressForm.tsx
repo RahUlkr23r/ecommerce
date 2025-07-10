@@ -27,6 +27,7 @@ interface AddressFormValues {
 }
 
 interface AddressFormProps {
+    onClose: () => void;
   paymentGateway: string;
 }
 

@@ -1,13 +1,14 @@
-import React from 'react';
+
 import { useAppSelector } from '../../../../State/Store';
 import { useNavigate } from 'react-router-dom';
+import { HomeCategory } from '../../../../tpyes/HomeCategoryType';
 
 const CategoryGrid = () => {
   const { customer } = useAppSelector((store) => store);
   const gridItems = customer?.homePageData?.grid?.slice(0, 6) || [];
   const navigate = useNavigate();
 
-  const handleCategoryClick = (item) => {
+  const handleCategoryClick = (item: HomeCategory) => {
     // Navigate to category page or perform other action
     if (item.categoryId) {
       navigate(`/product/${item.categoryId }`);

@@ -48,7 +48,7 @@ const BecomeSellerGuide: React.FC = () => {
       </Typography>
 
       <Grid container spacing={4}>
-        {steps.map((step, index) => (
+        {steps.map((step) => (
           <Grid >
             <Paper elevation={3} sx={{ p: 3, textAlign: 'center', borderRadius: 3 }}>
               {step.icon}

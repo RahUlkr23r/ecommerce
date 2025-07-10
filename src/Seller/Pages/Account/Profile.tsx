@@ -52,7 +52,7 @@ const Profile = () => {
   const { profile, loading, error } = useAppSelector((state) => state.seller);
   const jwt = localStorage.getItem("jwt");
 
-  const [editSection, setEditSection] = useState<string | null>(null);
+
   const [ setTempData] = useState<any>({});
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const Profile = () => {
 
   const handleEditClick = (section: string) => {
     if (!profile) return;
-    setEditSection(section);
+
     setTempData({ ...profile[section as keyof typeof profile] });
   };
 

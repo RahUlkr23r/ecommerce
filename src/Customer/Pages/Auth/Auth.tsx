@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import CustomerLogin from "./CustomerLogin";
 import CustomerRegister from "./CustomerRegister";
 import { Button, Paper } from "@mui/material";

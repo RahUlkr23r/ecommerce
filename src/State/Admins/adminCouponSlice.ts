@@ -62,6 +62,7 @@ export const deleteCoupon = createAsyncThunk(
           },
         }
       );
+      console.log("coupon delete",res.data)
       return couponId;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || 'Failed to delete coupon');

@@ -254,7 +254,7 @@ const Checkout: React.FC = () => {
       {/* Address Modal */}
       <Modal open={open} onClose={handleClose}>
         <Box sx={modalStyle}>
-          <AddressForm onClose={handleClose} />
+          <AddressForm onClose={handleClose} paymentGateway={""} />
         </Box>
       </Modal>
     </Box>

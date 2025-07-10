@@ -1,7 +1,5 @@
 import { Box, TextField } from '@mui/material';
-import React from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+
 
 const BecomeSellerFormStep1 = ({ formik }: any) => {
   return (

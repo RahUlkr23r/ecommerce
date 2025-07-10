@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import ElectricCategory from './ElectricCategory';
 import Deal from './Deal/DealHomePage';
 import CategoryGrid from './CategoryGrid/CategoryGrid';

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import CartItem from './CartItem';
-import { Close, LocalOffer } from '@mui/icons-material';
+import {  LocalOffer } from '@mui/icons-material';
 import { teal } from '@mui/material/colors';
 import {
   Button,
-  IconButton,
+
   TextField,
   Box,
   Typography,
@@ -71,14 +71,15 @@ const Cart = () => {
     if (!jwt) return;
 
     try {
-      await dispatch(
-        applyCoupon({
-          apply: 'false',
-          code: cart?.couponCode,
-          orderValue: 0,
-          jwt,
-        })
-      ).unwrap();
+    await dispatch(
+  applyCoupon({
+    apply: 'false',
+    code: cart?.couponCode ?? '',
+    orderValue: 0,
+    jwt,
+  })
+).unwrap();
+
 
       toast.info('❌ Coupon removed.');
       setCouponCode('');

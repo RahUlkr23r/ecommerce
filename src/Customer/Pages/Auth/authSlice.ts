@@ -104,7 +104,7 @@ export const fetchUserProfile = createAsyncThunk<
 // Logout
 export const userlogout = createAsyncThunk(
   "auth/userlogout",
-  async (navigate: NavigateFunction, { dispatch }) => {
+  async (navigate: NavigateFunction, { }) => {
     localStorage.clear();
     navigate("/");
     return null;

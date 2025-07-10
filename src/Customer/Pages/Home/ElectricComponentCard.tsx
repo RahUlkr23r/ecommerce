@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { HomeCategory } from '../../../tpyes/HomeCategoryType';
 import { Link } from 'react-router-dom';
 

@@ -45,23 +45,17 @@ const DealHomePage: React.FC = () => {
   return (
     <section className="py-10 px-0 sm:px-2 lg:px-4 bg-gray-50">
       <div className="mb-0 text-center">
-        
-      
+        {/* You can add a heading or banner here if needed */}
       </div>
 
-      {customer?.homePageData?.deals?.length > 0 ? (
-        <Slider {...settings}>
-          {customer.homePageData.deals.map((item, index) => (
-            <div key={index} className="px-2">
-              <DealCart item={item} />
-            </div>
-          ))}
-        </Slider>
-      ) : (
-        <div className="text-center text-gray-500">
-          No deals available at the moment.
-        </div>
-      )}
+      <Slider {...settings}>
+       {customer.homePageData?.deals.map((item, index) => (
+  <div key={index} className="px-2">
+    <DealCart item={item} />
+  </div>
+))}
+
+      </Slider>
     </section>
   );
 };
