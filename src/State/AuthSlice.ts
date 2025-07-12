@@ -16,6 +16,7 @@ export const sendLoginSignupOtp = createAsyncThunk(
       
       console.log("seller created",response.data)
       } catch (error: any) {
+          comsole.log("seller login err",error)
         return rejectWithValue(error.response?.data || "Error sending OTP");
       }
     }
