@@ -23,11 +23,11 @@ export const createSeller = createAsyncThunk(
   async (sellerData: Seller, { rejectWithValue }) => {
     try {
       const response = await axios.post('https://ecommerce-1-fwgt.onrender.com/sellers/create-seller', sellerData);
-   
+    console.log("seller created ",response.data)
       return response.data;
       
     } catch (error: any) {
-     
+      console.log("seller created error",error)
       return rejectWithValue(
         error.response?.data?.message || 'Failed to create seller'
       );
