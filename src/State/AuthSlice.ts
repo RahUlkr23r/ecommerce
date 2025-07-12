@@ -28,11 +28,13 @@ export const sendLoginSignupOtp = createAsyncThunk(
     async (loginRequest, { rejectWithValue }) => {
       try {
         const response = await api.post("/sellers/login", loginRequest); // just pass loginRequest directly
-        console.log("signin response...", response.data);
+
         const jwt=response.data.jwt;
         localStorage.setItem("jwt",jwt)
+          console.log("login  seller",response.data)
         return response.data; // ✅ return the data so it can be used in reducers
       } catch (error: any) {
+          console.log("loginerror",error)
         return rejectWithValue(error.response?.data || "Login failed");
       }
     }
