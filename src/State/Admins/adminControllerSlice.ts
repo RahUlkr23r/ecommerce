@@ -17,7 +17,7 @@ const initialState: SellerState = {
   error: null,
 };
 
-const BASE_URL = 'http://localhost:8989';
+const BASE_URL = 'https://ecommerce-1-fwgt.onrender.com';
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('jwt');
