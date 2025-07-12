@@ -140,7 +140,7 @@ export const paymentSuccess = createAsyncThunk<
       headers: { Authorization: `Bearer ${jwt}` },
       params: { paymentLinkId },
     });
-   
+   console.log("order paymennt",response.data);
     return response.data;
   } catch (error: any) {
     console.log("Payment error:", error.response);
