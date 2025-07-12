@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Deals, DealsState } from '../../tpyes/dealType';
 
-const BASE_URL = 'http://localhost:8989/admin/deals';
+const BASE_URL = 'https://ecommerce-1-fwgt.onrender.com/admin/deals';
 
 // 🔐 Get Authorization header
 const getAuthHeader = () => {
