@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -24,14 +23,14 @@ const DrawerList: React.FC<DrawerListProps> = ({ menu, menu2, toggleDrawer }) =>
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    dispatch(logout(navigate));
+    dispatch(logout(() => navigate('/login'))); // ✅ pass navigate as callback
     toggleDrawer();
   };
 
   const renderMenu = (items: MenuItem[]) =>
     items.map((item, index) => {
       const isActive = location.pathname === item.path;
-      const isLogout = item.name.toLowerCase() === "logout";
+      const isLogout = item.name.toLowerCase() === 'logout';
 
       return (
         <ListItem
@@ -41,7 +40,7 @@ const DrawerList: React.FC<DrawerListProps> = ({ menu, menu2, toggleDrawer }) =>
               handleLogout();
             } else {
               navigate(item.path);
-              toggleDrawer(); // Close drawer on mobile
+              toggleDrawer();
             }
           }}
           component="button"
