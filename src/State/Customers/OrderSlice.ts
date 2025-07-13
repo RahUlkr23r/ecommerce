@@ -120,7 +120,7 @@ export const createOrder = createAsyncThunk<
 
       return response.data;
     } catch (error: any) {
-   
+    console.log("order created fialed", response.data);
       return rejectWithValue(
         "Failed to create order: " +
           (error.response?.data?.message || error.message)
