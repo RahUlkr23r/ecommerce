@@ -22,11 +22,8 @@ export const fetchAllCoupons = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BASE_URL}/all`, getAuthHeader());
-  
-
       return response.data as Coupon[];
     } catch (error: any) {
-  
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch coupons');
     }
   }
@@ -38,18 +35,14 @@ export const createCoupon = createAsyncThunk(
   async (coupon: Omit<Coupon, 'id'>, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${BASE_URL}/admin/create`, coupon, getAuthHeader());
-  
       return response.data as Coupon;
     } catch (error: any) {
-    
       return rejectWithValue(error.response?.data?.message || 'Failed to create coupon');
     }
   }
 );
 
 // 3. Delete a coupon by ID
-// adminCouponSlice.ts
-
 export const deleteCoupon = createAsyncThunk(
   'adminCoupons/delete',
   async ({ couponId, token }: { couponId: number; token: string }, { rejectWithValue }) => {
@@ -62,15 +55,13 @@ export const deleteCoupon = createAsyncThunk(
           },
         }
       );
-      console.log("coupon delete",res.data)
+      console.log("coupon created",res.data);
       return couponId;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || 'Failed to delete coupon');
     }
   }
 );
-
-
 
 // 🧾 State type
 interface AdminCouponState {
@@ -112,6 +103,10 @@ const adminCouponSlice = createSlice({
         state.error = null;
       })
       .addCase(createCoupon.fulfilled, (state, action: PayloadAction<Coupon>) => {
+        // ✅ Fix: Ensure coupons is always an array
+        if (!Array.isArray(state.coupons)) {
+          state.coupons = [];
+        }
         state.coupons.push(action.payload);
         state.loading = false;
       })
