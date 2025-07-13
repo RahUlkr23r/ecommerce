@@ -93,7 +93,7 @@ export const createOrder = createAsyncThunk<
   async ({ address, jwt, amount, paymentGateway }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "https://ecommerce-1-fwgt.onrender.com/api/orders/create",
+        "https://ecommerce-1-fwgt.onrender.com api/orders/create",
         {
           ...address,
           pincode: Number(address.pincode),
