@@ -88,20 +88,19 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
     };
   }, [order.orderDate, order.orderStatus]);
 
-  // === Calculate discounted price for this item ===
+  // ✅ Correct Discount Calculation
   const totalOrderDiscount = order.discount ?? 0;
   const totalOrderSellingPrice = order.totalSellingPrice ?? 0;
 
+  const itemTotalSelling = item.sellingPrice * item.quantity;
+  const itemMrpTotal = item.product.mrpPrice * item.quantity;
+
   const itemShare =
-    totalOrderSellingPrice > 0
-      ? item.sellingPrice / totalOrderSellingPrice
-      : 0;
+    totalOrderSellingPrice > 0 ? itemTotalSelling / totalOrderSellingPrice : 0;
 
   const itemDiscount = itemShare * totalOrderDiscount;
-  const finalItemPrice = (item.sellingPrice - itemDiscount).toFixed(2);
-  const itemTotal = (parseFloat(finalItemPrice) * item.quantity).toFixed(2);
-  const originalTotal = (item.quantity * item.sellingPrice).toFixed(2);
-  const savings = (parseFloat(originalTotal) - parseFloat(itemTotal)).toFixed(2);
+  const finalItemTotal = itemTotalSelling - itemDiscount;
+  const savings = itemMrpTotal - finalItemTotal;
 
   const paymentCompleted = order.paymentStatus === 'COMPLETED';
 
@@ -200,14 +199,14 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
 
         <Box textAlign="right" minWidth={120}>
           <Typography variant="body1" fontWeight="bold" color="primary">
-            ₹{itemTotal}
+            ₹{finalItemTotal.toFixed(2)}
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
             sx={{ textDecoration: 'line-through' }}
           >
-            ₹{originalTotal}
+            ₹{itemMrpTotal.toFixed(2)}
           </Typography>
 
           {!paymentCompleted ? (
@@ -215,9 +214,9 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
               Payment {order.paymentStatus?.toLowerCase() || 'pending'}
             </Typography>
           ) : (
-            parseFloat(savings) > 0 && (
+            savings > 0 && (
               <Typography variant="body2" color="green">
-                You saved ₹{savings}
+                You saved ₹{savings.toFixed(2)}
               </Typography>
             )
           )}
