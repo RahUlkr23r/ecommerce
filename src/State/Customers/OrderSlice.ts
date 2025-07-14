@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+
 import { Address } from "../../tpyes/usertype";
 import { Order, OrderItems, OrderState } from "../../tpyes/OrderTypes";
 import { api } from "../../Config/Api";
@@ -26,6 +27,7 @@ export const fetchUserOrderHistory = createAsyncThunk<
     const response = await api.get<Order[]>(`${API_URL}/user/history`, {
       headers: { Authorization: `Bearer ${jwt}` },
     });
+  
     return response.data;
   } catch (error: any) {
     return rejectWithValue(
@@ -44,6 +46,7 @@ export const fetchOrderById = createAsyncThunk<
     const response = await api.get<Order>(`${API_URL}/${orderId}`, {
       headers: { Authorization: `Bearer ${jwt}` },
     });
+    
     return response.data;
   } catch (error: any) {
     return rejectWithValue(
@@ -64,6 +67,7 @@ export const fetchOrderItemById = createAsyncThunk<
       const response = await api.get<OrderItems>(`${API_URL}/item/${orderItemId}`, {
         headers: { Authorization: `Bearer ${jwt}` },
       });
+   
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -98,14 +102,16 @@ export const createOrder = createAsyncThunk<
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}` },
+            Authorization: `Bearer ${jwt}`,
+          },
           params: {
             paymentMethod: paymentGateway ? paymentGateway.toUpperCase() : "RAZORPAY",
           },
         }
       );
 
-      // redirect to payment
+      console.log("Order created successfully:", response.data);
+
       if (response.data.payment_link_url) {
         window.location.href = response.data.payment_link_url;
       } else if (response.data.payment_link_id) {
@@ -114,6 +120,7 @@ export const createOrder = createAsyncThunk<
 
       return response.data;
     } catch (error: any) {
+   
       return rejectWithValue(
         "Failed to create order: " +
           (error.response?.data?.message || error.message)
@@ -122,7 +129,7 @@ export const createOrder = createAsyncThunk<
   }
 );
 
-// ✅ 5. Handle Razorpay Payment Success
+// ✅ 5. Handle Payment Success
 export const paymentSuccess = createAsyncThunk<
   any,
   { paymentId: string; jwt: string; paymentLinkId: string },
@@ -133,15 +140,16 @@ export const paymentSuccess = createAsyncThunk<
       headers: { Authorization: `Bearer ${jwt}` },
       params: { paymentLinkId },
     });
+   
     return response.data;
   } catch (error: any) {
-    console.error("Payment error:", error.response);
-    return rejectWithValue(
-      error.response?.data?.message || "Payment verification failed"
-    );
+    console.log("Payment error:", error.response);
+    if (error.response) {
+      return rejectWithValue(error.response.data.message);
+    }
+  
   }
 });
-
 // ✅ 6. Cancel Order
 export const cancelOrder = createAsyncThunk<
   Order,
@@ -150,8 +158,11 @@ export const cancelOrder = createAsyncThunk<
 >("order/cancelOrder", async ({ orderId, jwt }, { rejectWithValue }) => {
   try {
     const response = await api.put<Order>(`${API_URL}/${orderId}/cancel`, null, {
-      headers: { Authorization: `Bearer ${jwt}` },
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
     });
+   
     return response.data;
   } catch (error: any) {
     return rejectWithValue(
@@ -161,7 +172,7 @@ export const cancelOrder = createAsyncThunk<
 });
 
 
-// ✅ Order Slice
+// ✅ Slice Definition
 const orderSlice = createSlice({
   name: "order",
   initialState,
@@ -175,7 +186,7 @@ const orderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // 🟡 Order History
+      // fetchUserOrderHistory
       .addCase(fetchUserOrderHistory.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -189,7 +200,7 @@ const orderSlice = createSlice({
         state.error = action.payload || "Something went wrong";
       })
 
-      // 🟡 Create Order
+      // createOrder
       .addCase(createOrder.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -203,7 +214,7 @@ const orderSlice = createSlice({
         state.error = action.payload || "Order creation failed";
       })
 
-      // 🟡 Fetch Order By ID
+      // ✅ fetchOrderById
       .addCase(fetchOrderById.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -217,7 +228,7 @@ const orderSlice = createSlice({
         state.error = action.payload || "Failed to fetch order by ID";
       })
 
-      // 🟡 Fetch Order Item
+      // ✅ fetchOrderItemById
       .addCase(fetchOrderItemById.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -228,45 +239,35 @@ const orderSlice = createSlice({
       })
       .addCase(fetchOrderItemById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Failed to fetch order item";
+        state.error = action.payload || "Failed to fetch order item by ID";
       })
+      // ✅ cancelOrder
+.addCase(cancelOrder.pending, (state) => {
+  state.loading = true;
+  state.error = null;
+  state.orderCanceled = false;
+})
+.addCase(cancelOrder.fulfilled, (state, action) => {
+  const canceledOrder = action.payload;
+  state.loading = false;
+  state.orderCanceled = true;
 
-      // 🟡 Cancel Order
-      .addCase(cancelOrder.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-        state.orderCanceled = false;
-      })
-      .addCase(cancelOrder.fulfilled, (state, action) => {
-        const canceledOrder = action.payload;
-        state.loading = false;
-        state.orderCanceled = true;
-        state.orders = state.orders.map((order) =>
-          order.id === canceledOrder.id ? canceledOrder : order
-        );
-        if (state.currentOrder?.id === canceledOrder.id) {
-          state.currentOrder = canceledOrder;
-        }
-      })
-      .addCase(cancelOrder.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload || "Failed to cancel order";
-        state.orderCanceled = false;
-      })
+  // Update the canceled order in orders list
+  state.orders = state.orders.map((order) =>
+    order.id === canceledOrder.id ? canceledOrder : order
+  );
 
-      // 🟢 Payment Success
-      .addCase(paymentSuccess.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(paymentSuccess.fulfilled, (state) => {
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(paymentSuccess.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload || "Payment failed";
-      });
+  // Update currentOrder if it matches
+  if (state.currentOrder?.id === canceledOrder.id) {
+    state.currentOrder = canceledOrder;
+  }
+})
+.addCase(cancelOrder.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload || "Failed to cancel order";
+  state.orderCanceled = false;
+});
+
   },
 });
 
