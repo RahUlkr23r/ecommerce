@@ -162,9 +162,11 @@ export const cancelOrder = createAsyncThunk<
         Authorization: `Bearer ${jwt}`,
       },
     });
-   
+    console.log("paymentSucces",response.data);
     return response.data;
   } catch (error: any) {
+    console.log("payment error",error);
+
     return rejectWithValue(
       error.response?.data?.message || "Failed to cancel order"
     );
