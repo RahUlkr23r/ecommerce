@@ -88,10 +88,20 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
     };
   }, [order.orderDate, order.orderStatus]);
 
-  // ✅ Calculate prices without any discount logic
-  const itemTotal = item.sellingPrice * item.quantity;
-  const originalTotal = item.product.mrpPrice * item.quantity;
-  const savings = originalTotal - itemTotal;
+  // === Calculate discounted price for this item ===
+  const totalOrderDiscount = order.discount ?? 0;
+  const totalOrderSellingPrice = order.totalSellingPrice ?? 0;
+
+  const itemShare =
+    totalOrderSellingPrice > 0
+      ? item.sellingPrice / totalOrderSellingPrice
+      : 0;
+
+  const itemDiscount = itemShare * totalOrderDiscount;
+  const finalItemPrice = (item.sellingPrice - itemDiscount).toFixed(2);
+  const itemTotal = (parseFloat(finalItemPrice) * item.quantity).toFixed(2);
+  const originalTotal = (item.quantity * item.sellingPrice).toFixed(2);
+  const savings = (parseFloat(originalTotal) - parseFloat(itemTotal)).toFixed(2);
 
   const paymentCompleted = order.paymentStatus === 'COMPLETED';
 
@@ -190,14 +200,14 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
 
         <Box textAlign="right" minWidth={120}>
           <Typography variant="body1" fontWeight="bold" color="primary">
-            ₹{itemTotal.toFixed(2)}
+            ₹{itemTotal}
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
             sx={{ textDecoration: 'line-through' }}
           >
-            ₹{originalTotal.toFixed(2)}
+            ₹{originalTotal}
           </Typography>
 
           {!paymentCompleted ? (
@@ -205,9 +215,9 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
               Payment {order.paymentStatus?.toLowerCase() || 'pending'}
             </Typography>
           ) : (
-            savings > 0 && (
+            parseFloat(savings) > 0 && (
               <Typography variant="body2" color="green">
-                You saved ₹{savings.toFixed(2)}
+                You saved ₹{savings}
               </Typography>
             )
           )}
