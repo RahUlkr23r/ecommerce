@@ -88,7 +88,7 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
     };
   }, [order.orderDate, order.orderStatus]);
 
-  // === Calculate discounted price for this item ===
+  // === Fix: Safe & accurate item-level pricing ===
   const totalOrderDiscount = order.discount ?? 0;
   const totalOrderSellingPrice = order.totalSellingPrice ?? 0;
 
@@ -98,10 +98,15 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
       : 0;
 
   const itemDiscount = itemShare * totalOrderDiscount;
-  const finalItemPrice = (item.sellingPrice - itemDiscount).toFixed(2);
-  const itemTotal = (parseFloat(finalItemPrice) * item.quantity).toFixed(2);
-  const originalTotal = (item.quantity * item.sellingPrice).toFixed(2);
-  const savings = (parseFloat(originalTotal) - parseFloat(itemTotal)).toFixed(2);
+  const finalItemPriceNum = item.sellingPrice - itemDiscount;
+  const itemTotalNum = finalItemPriceNum * item.quantity;
+  const originalTotalNum = item.quantity * item.sellingPrice;
+  const savingsNum = originalTotalNum - itemTotalNum;
+
+  // Format only for display
+  const itemTotal = itemTotalNum.toFixed(2);
+  const originalTotal = originalTotalNum.toFixed(2);
+  const savings = savingsNum.toFixed(2);
 
   const paymentCompleted = order.paymentStatus === 'COMPLETED';
 
@@ -166,7 +171,7 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
         <Box>
           <img
             src={item.product.images[0]}
-            alt={item.product.title}
+            alt={item.product.title || 'Product'}
             style={{
               width: 120,
               height: 120,
