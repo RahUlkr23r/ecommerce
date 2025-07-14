@@ -88,10 +88,10 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
     };
   }, [order.orderDate, order.orderStatus]);
 
-  // ✅ No discount calculation
-  const finalPrice = item.totalPrice 
-  const mrpTotal = item.product.mrpPrice 
-  const savings = mrpTotal - finalPrice;
+  // ✅ Calculate prices without any discount logic
+  const itemTotal = item.sellingPrice * item.quantity;
+  const originalTotal = item.product.mrpPrice * item.quantity;
+  const savings = originalTotal - itemTotal;
 
   const paymentCompleted = order.paymentStatus === 'COMPLETED';
 
@@ -190,26 +190,26 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
 
         <Box textAlign="right" minWidth={120}>
           <Typography variant="body1" fontWeight="bold" color="primary">
-            ₹{finalPrice.toFixed(2)}
+            ₹{itemTotal.toFixed(2)}
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
             sx={{ textDecoration: 'line-through' }}
           >
-            ₹{mrpTotal.toFixed(2)}
+            ₹{originalTotal.toFixed(2)}
           </Typography>
 
-          {paymentCompleted && savings > 0 && (
-            <Typography variant="body2" color="green">
-              You saved ₹{savings.toFixed(2)}
-            </Typography>
-          )}
-
-          {!paymentCompleted && (
+          {!paymentCompleted ? (
             <Typography variant="body2" color="error.main">
               Payment {order.paymentStatus?.toLowerCase() || 'pending'}
             </Typography>
+          ) : (
+            savings > 0 && (
+              <Typography variant="body2" color="green">
+                You saved ₹{savings.toFixed(2)}
+              </Typography>
+            )
           )}
         </Box>
       </Box>
