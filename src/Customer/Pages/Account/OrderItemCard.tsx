@@ -88,19 +88,10 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
     };
   }, [order.orderDate, order.orderStatus]);
 
-  // ✅ Correct Discount Calculation
-  const totalOrderDiscount = order.discount ?? 0;
-  const totalOrderSellingPrice = order.totalSellingPrice ?? 0;
-
-  const itemTotalSelling = item.sellingPrice * item.quantity;
-  const itemMrpTotal = item.product.mrpPrice * item.quantity;
-
-  const itemShare =
-    totalOrderSellingPrice > 0 ? itemTotalSelling / totalOrderSellingPrice : 0;
-
-  const itemDiscount = itemShare * totalOrderDiscount;
-  const finalItemTotal = itemTotalSelling - itemDiscount;
-  const savings = itemMrpTotal - finalItemTotal;
+  // ✅ No discount calculation
+  const finalPrice = item.totalPrice 
+  const mrpTotal = item.product.mrpPrice 
+  const savings = mrpTotal - finalPrice;
 
   const paymentCompleted = order.paymentStatus === 'COMPLETED';
 
@@ -199,26 +190,26 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
 
         <Box textAlign="right" minWidth={120}>
           <Typography variant="body1" fontWeight="bold" color="primary">
-            ₹{finalItemTotal.toFixed(2)}
+            ₹{finalPrice.toFixed(2)}
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
             sx={{ textDecoration: 'line-through' }}
           >
-            ₹{itemMrpTotal.toFixed(2)}
+            ₹{mrpTotal.toFixed(2)}
           </Typography>
 
-          {!paymentCompleted ? (
+          {paymentCompleted && savings > 0 && (
+            <Typography variant="body2" color="green">
+              You saved ₹{savings.toFixed(2)}
+            </Typography>
+          )}
+
+          {!paymentCompleted && (
             <Typography variant="body2" color="error.main">
               Payment {order.paymentStatus?.toLowerCase() || 'pending'}
             </Typography>
-          ) : (
-            savings > 0 && (
-              <Typography variant="body2" color="green">
-                You saved ₹{savings.toFixed(2)}
-              </Typography>
-            )
           )}
         </Box>
       </Box>
