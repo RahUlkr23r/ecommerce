@@ -67,7 +67,7 @@ const Checkout: React.FC = () => {
     ) || 0;
 
   const discount = subtotal - (cart?.totalSellingPrice || subtotal);
-  const shipping = subtotal > 500 ? 0 : 45;
+  const shipping = subtotal > 499 ? 0 : 45;
   const platformFee = 4;
 
   const totalPayable = (cart?.totalSellingPrice || subtotal) + shipping + platformFee;
