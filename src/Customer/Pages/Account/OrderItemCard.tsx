@@ -88,21 +88,6 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
     };
   }, [order.orderDate, order.orderStatus]);
 
-  // === Calculate discounted price for this item ===
-  const totalOrderDiscount = order.discount ?? 0;
-  const totalOrderSellingPrice = order.totalSellingPrice ?? 0;
-
-  const itemShare =
-    totalOrderSellingPrice > 0
-      ? item.sellingPrice / totalOrderSellingPrice
-      : 0;
-
-  const itemDiscount = itemShare * totalOrderDiscount;
-  const finalItemPrice = (item.sellingPrice - itemDiscount).toFixed(2);
-  const itemTotal = (parseFloat(finalItemPrice) * item.quantity).toFixed(2);
-  const originalTotal = (item.quantity * item.sellingPrice).toFixed(2);
-  const savings = (parseFloat(originalTotal) - parseFloat(itemTotal)).toFixed(2);
-
   const paymentCompleted = order.paymentStatus === 'COMPLETED';
 
   const handleClick = () => {
@@ -110,6 +95,30 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
       navigate(`/account/order/${order.id}/${item.id}`);
     }
   };
+
+  // 🧮 Proportional Discount Logic (same as OrderDetails)
+  const {
+    itemSp,
+    itemDiscount,
+    finalAmount
+  } = useMemo(() => {
+    
+    const sp = item.sellingPrice ?? 0;
+    const totalSp = sp ;
+
+    const totalDiscount = order.discount ?? 0;
+    const orderTotalSp = order.totalSellingPrice ?? 0;
+
+    const itemShare = orderTotalSp > 0 ? totalSp / orderTotalSp : 0;
+    const itemLevelDiscount = itemShare * totalDiscount;
+    const finalPrice = totalSp - itemLevelDiscount;
+
+    return {
+      itemSp: totalSp,
+      itemDiscount: itemLevelDiscount,
+      finalAmount: finalPrice
+    };
+  }, [item, order]);
 
   return (
     <Box
@@ -176,6 +185,7 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
             }}
           />
         </Box>
+
         <Box flexGrow={1}>
           <Typography variant="subtitle2" color="text.secondary">
             {item.product.seller?.businessDetails?.bussinessName}
@@ -200,27 +210,24 @@ const OrderItemCard = ({ item, order }: { item: OrderItems; order: Order }) => {
 
         <Box textAlign="right" minWidth={120}>
           <Typography variant="body1" fontWeight="bold" color="primary">
-            ₹{itemTotal}
+           Paid  -  ₹{finalAmount.toFixed(2)}
           </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ textDecoration: 'line-through' }}
-          >
-            ₹{originalTotal}
-          </Typography>
+
+          {itemSp > 0 && itemDiscount > 0 && (
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ textDecoration: 'line-through' }}
+            >
+          ₹{itemSp.toFixed(2)}
+            </Typography>
+          )}
 
           {!paymentCompleted ? (
             <Typography variant="body2" color="error.main">
               Payment {order.paymentStatus?.toLowerCase() || 'pending'}
             </Typography>
-          ) : (
-            parseFloat(savings) > 0 && (
-              <Typography variant="body2" color="green">
-                You saved ₹{savings}
-              </Typography>
-            )
-          )}
+          ) : null}
         </Box>
       </Box>
     </Box>
