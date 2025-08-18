@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Coupon } from '../../tpyes/CouponType';
 import axios from 'axios';
 
-const BASE_URL = 'https://ecommerce-1-fwgt.onrender.com/admin/coupons';
+const BASE_URL = 'https://ecommerce-lrjs.onrender.com/admin/coupons';
 
 // ✅ Helper: Get JWT from localStorage
 const getAuthHeader = () => {

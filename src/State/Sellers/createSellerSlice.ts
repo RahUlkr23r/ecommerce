@@ -17,11 +17,12 @@ const initialState: SellerState = {
   success: false,
 };
 
+// 🔄 Async thunk to create seller
 export const createSeller = createAsyncThunk(
   'seller/createSeller',
   async (sellerData: Seller, { rejectWithValue }) => {
     try {
-      const response = await axios.post('https://ecommerce-1-fwgt.onrender.com/sellers/create-seller', sellerData);
+      const response = await axios.post('https://ecommerce-lrjs.onrender.com/sellers/create-seller', sellerData);
    
       return response.data;
       

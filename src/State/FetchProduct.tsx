@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api= "https://ecommerce-1-fwgt.onrender.com"
+const api= "https://ecommerce-lrjs.onrender.com"
 export const fetchProduct=async()=>{
     try{
         const response= await axios.get(api)
